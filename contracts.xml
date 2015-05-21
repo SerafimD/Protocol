@@ -1,0 +1,47 @@
+<!DOCTYPE contracts>
+<contracts>
+ <contract>
+  <Code/>
+  <DateOfReceipt>01.01.00</DateOfReceipt>
+  <DateTransferLaboratory>01.01.00</DateTransferLaboratory>
+  <DateReceiptResults>01.01.00</DateReceiptResults>
+  <AccountNumber/>
+  <DatePay>01.01.00</DatePay>
+  <Urgent>0</Urgent>
+  <SentToCustomer>0</SentToCustomer>
+  <Comment/>
+ </contract>
+ <contract>
+  <Code/>
+  <DateOfReceipt>01.01.00</DateOfReceipt>
+  <DateTransferLaboratory>01.01.00</DateTransferLaboratory>
+  <DateReceiptResults>01.01.00</DateReceiptResults>
+  <AccountNumber/>
+  <DatePay>01.01.00</DatePay>
+  <Urgent>0</Urgent>
+  <SentToCustomer>0</SentToCustomer>
+  <Comment/>
+ </contract>
+ <contract number="123">
+  <Code>444</Code>
+  <DateOfReceipt>01.01.00</DateOfReceipt>
+  <DateTransferLaboratory>01.01.00</DateTransferLaboratory>
+  <DateReceiptResults>01.01.00</DateReceiptResults>
+  <AccountNumber>555</AccountNumber>
+  <DatePay>01.01.00</DatePay>
+  <Urgent>1</Urgent>
+  <SentToCustomer>0</SentToCustomer>
+  <Comment>Comment</Comment>
+ </contract>
+ <contract number="12">
+  <Code>13</Code>
+  <DateOfReceipt>01.01.00</DateOfReceipt>
+  <DateTransferLaboratory>01.01.00</DateTransferLaboratory>
+  <DateReceiptResults>01.01.00</DateReceiptResults>
+  <AccountNumber>444</AccountNumber>
+  <DatePay>01.01.00</DatePay>
+  <Urgent>1</Urgent>
+  <SentToCustomer>1</SentToCustomer>
+  <Comment>comment</Comment>
+ </contract>
+</contracts>
