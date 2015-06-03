@@ -254,7 +254,7 @@ QDomElement addDialog::findNecessaryNode(const QDomNode& node,const QString& nec
             return true;
     }
     */
-    return 0;
+    //return 0;
 }
 
 void addDialog::on_buttonBox_rejected()
