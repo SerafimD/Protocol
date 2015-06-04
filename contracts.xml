@@ -1,14 +1,14 @@
 <!DOCTYPE contracts>
 <contracts>
  <contract number="1">
-  <Code>2</Code>
+  <Code>1</Code>
   <DateOfReceipt>04.06.15</DateOfReceipt>
   <DateTransferLaboratory>04.06.15</DateTransferLaboratory>
   <DateReceiptResults>04.06.15</DateReceiptResults>
   <AccountNumber/>
   <DatePay>04.06.15</DatePay>
-  <Urgent>0</Urgent>
-  <SentToCustomer>0</SentToCustomer>
+  <Urgent>1</Urgent>
+  <SentToCustomer>1</SentToCustomer>
   <Comment/>
  </contract>
 </contracts>

@@ -233,7 +233,7 @@ void addDialog::on_buttonBox_accepted()
 
 QDomElement addDialog::findNecessaryNode(const QDomNode& node,const QString& necessaryName,const QString& number)
 {
-    qDebug() << 1;
+    //qDebug() << 1;
     if(node.isElement())
     {
         QDomElement element = node.toElement();
@@ -241,7 +241,7 @@ QDomElement addDialog::findNecessaryNode(const QDomNode& node,const QString& nec
             return element;
     }
 
-    qDebug() << 2;
+    //qDebug() << 2;
 
     QDomNode siblingNode = node.nextSiblingElement();
     while(!siblingNode.isNull()){
@@ -251,7 +251,7 @@ QDomElement addDialog::findNecessaryNode(const QDomNode& node,const QString& nec
         siblingNode = siblingNode.nextSiblingElement();
     }
 
-    qDebug() << 3;
+    //qDebug() << 3;
 
     QDomNode childNode = node.firstChild();
     if(!childNode.isNull()){

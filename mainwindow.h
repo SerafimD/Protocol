@@ -18,13 +18,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    int getCurrentRow(){return this->currentRow;}
-
 private:
     Ui::MainWindow *ui;
     addDialog *dlg;
-    int currentRow;
-    QString contractNumber;
 
 public slots:
     void addSlot();
@@ -32,7 +28,6 @@ public slots:
     void deleteSlot();
     void copySlot();
     void updateTables();
-    void RowSelected(int row, int col);     // слот обработки сигнала "клик по строке таблицы"
 };
 
 class NonEditTableColumnDelegate : public QItemDelegate
