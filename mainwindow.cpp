@@ -14,27 +14,27 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QAction *addAction = new QAction(tr("&Добавить"), this);
     //addAction->setShortcuts(QKeySequence::Open);
-    addAction->setStatusTip(tr("New contract"));
+    addAction->setStatusTip(tr("Новый договор"));
     connect(addAction, SIGNAL(triggered()), this, SLOT(addSlot()));
 
     QAction *changeAction = new QAction(tr("&Изменить"), this);
     //changeAction->setShortcuts(QKeySequence::Open);
-    changeAction->setStatusTip(tr("Change current contract"));
+    changeAction->setStatusTip(tr("Изменить текущий договор"));
     connect(changeAction, SIGNAL(triggered()), this, SLOT(changeSlot()));
 
     QAction *deleteAction = new QAction(tr("&Удалить"), this);
     //deleteAction->setShortcuts(QKeySequence::Open);
-    deleteAction->setStatusTip(tr("delete contract"));
+    deleteAction->setStatusTip(tr("Удалить договор"));
     connect(deleteAction, SIGNAL(triggered()), this, SLOT(deleteSlot()));
 
     QAction *copyAction = new QAction(tr("&Копировать"), this);
     //copyAction->setShortcuts(QKeySequence::Open);
-    copyAction->setStatusTip(tr("copy contract"));
+    copyAction->setStatusTip(tr("Скопировать договор"));
     connect(copyAction, SIGNAL(triggered()), this, SLOT(copySlot()));
 
     QAction *updateAction = new QAction(tr("&Обновить"), this);
     //copyAction->setShortcuts(QKeySequence::Open);
-    copyAction->setStatusTip(tr("update tables"));
+    updateAction->setStatusTip(tr("Обновить представление"));
     connect(updateAction, SIGNAL(triggered()), this, SLOT(updateTables()));
 
     ui->upperTable->addAction(addAction);
