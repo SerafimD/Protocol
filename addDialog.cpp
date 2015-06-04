@@ -178,7 +178,7 @@ void addDialog::on_buttonBox_accepted()
     case 1:
         break;
     case 2:
-        qDebug() << "Created";
+        qDebug() << "Deleted";
         // Если файл создан, то удаляем ветку и перезаписываем файл
         if(file.open(QIODevice::ReadWrite)) {
             QDomDocument doc("contracts");
@@ -226,7 +226,6 @@ void addDialog::on_buttonBox_accepted()
     default:
         break;
     }
-
 
 }
 

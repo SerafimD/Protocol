@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     dlg = 0;
 
+    currentRow = 0;
+
     this->ui->centralWidget->setLayout(ui->verticalLayout);
 
     // Создаём контекстное меню для верхней таблицы
@@ -43,6 +45,24 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->upperTable->addAction(copyAction);
     ui->upperTable->addAction(updateAction);
     ui->upperTable->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+    ui->upperTable->setItemDelegateForColumn(0, new NonEditTableColumnDelegate());
+    ui->upperTable->setItemDelegateForColumn(1, new NonEditTableColumnDelegate());
+    ui->upperTable->setItemDelegateForColumn(2, new NonEditTableColumnDelegate());
+    ui->upperTable->setItemDelegateForColumn(3, new NonEditTableColumnDelegate());
+    ui->upperTable->setItemDelegateForColumn(4, new NonEditTableColumnDelegate());
+    ui->upperTable->setItemDelegateForColumn(5, new NonEditTableColumnDelegate());
+    ui->upperTable->setItemDelegateForColumn(6, new NonEditTableColumnDelegate());
+    ui->upperTable->setItemDelegateForColumn(7, new NonEditTableColumnDelegate());
+    ui->upperTable->setItemDelegateForColumn(8, new NonEditTableColumnDelegate());
+    ui->upperTable->setItemDelegateForColumn(9, new NonEditTableColumnDelegate());
+
+    ui->upperTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->upperTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->upperTable->setFocusPolicy(Qt::NoFocus);
+
+    // Соединение сигналов и слотов
+    connect(this->ui->upperTable,SIGNAL(cellClicked(int,int)),this, SLOT(RowSelected(int, int)));
 
     updateTables();
 }
@@ -120,4 +140,10 @@ void MainWindow::updateTables()
      this->ui->upperTable->resizeRowsToContents();
     this->ui->downTable->resizeColumnsToContents();
      this->ui->downTable->resizeRowsToContents();
+}
+
+void MainWindow::RowSelected(int row, int col)
+{
+    this->currentRow = row;
+    qDebug() << "row = " << currentRow;
 }

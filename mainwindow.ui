@@ -175,6 +175,9 @@
     <property name="title">
      <string>Сводная информация</string>
     </property>
+    <addaction name="separator"/>
+    <addaction name="actionAllContracts"/>
+    <addaction name="separator"/>
     <addaction name="actionTodayContracts"/>
     <addaction name="actionPaidContracts"/>
     <addaction name="actionNotPaidContracts"/>
@@ -237,6 +240,11 @@
   <action name="actionAbout">
    <property name="text">
     <string>О программе</string>
+   </property>
+  </action>
+  <action name="actionAllContracts">
+   <property name="text">
+    <string>Все договора</string>
    </property>
   </action>
  </widget>
