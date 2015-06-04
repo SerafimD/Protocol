@@ -76,7 +76,7 @@ void MainWindow::addSlot()
 {
     qDebug() << "add slot activated" << ui->upperTable->currentRow();
 
-    addDialog *dlg = new addDialog(this,0,contractNumber);
+    addDialog *dlg = new addDialog(this,0,currentRow,ui->upperTable);
     //connect(dlg,SIGNAL(accepted()),this,SLOT(updateTables()));
     this->dlg = dlg;
     dlg->exec();
@@ -87,7 +87,7 @@ void MainWindow::changeSlot()
 {
     qDebug() << "change slot activated" << ui->upperTable->currentRow();
 
-    addDialog *dlg = new addDialog(this,1,contractNumber);
+    addDialog *dlg = new addDialog(this,1,currentRow,ui->upperTable);
     dlg->exec();
     updateTables();
 }
@@ -96,7 +96,7 @@ void MainWindow::deleteSlot()
 {
     qDebug() << "delete slot activated" << ui->upperTable->currentRow();
 
-    addDialog *dlg = new addDialog(this,2,contractNumber);
+    addDialog *dlg = new addDialog(this,2,currentRow,ui->upperTable);
     dlg->exec();
     updateTables();
 }
@@ -105,7 +105,7 @@ void MainWindow::copySlot()
 {
     qDebug() << "copy slot activated" << ui->upperTable->currentRow();
 
-    addDialog *dlg = new addDialog(this,3,contractNumber);
+    addDialog *dlg = new addDialog(this,3,currentRow,ui->upperTable);
     dlg->exec();
     updateTables();
 }

@@ -2,23 +2,48 @@
 #include "ui_addDialog.h"
 #include "mainwindow.h"
 
-addDialog::addDialog(QWidget *parent, int state, QString _contractNumber) :
+addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *_table) :
     QDialog(parent),
     ui(new Ui::addDialog)
 {
     ui->setupUi(this);
     this->state = state;
 
-    contractNumber = _contractNumber;
+    currentRow = _currentRow;
+    table = _table;
 
-    if(state == 0){
+    if(state == 0)
+    {
+        // Заголовок
         this->setWindowTitle("Add contract");
-    }else if(state == 1){
+        // Установка текущей даты
+        ui->dateEdit_DateOfReceipt->setDate(QDate::currentDate ());
+        ui->dateEdit_DatePay->setDate(QDate::currentDate ());
+        ui->dateEdit_DateReceiptResults->setDate(QDate::currentDate ());
+        ui->dateEdit_DateTransferLaboratory->setDate(QDate::currentDate ());
+
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    }
+    else if(state == 1)
+    {
+        // Заголовок
         this->setWindowTitle("Change contract");
-    }else if(state == 2){
+
+    }
+    else if(state == 2)
+    {
+        // Заголовок
         this->setWindowTitle("Delete contract");
-    }else if(state == 3){
+        // Настройка формы
+        ui->lineEdit_ContractNumber->setText(table->item(currentRow,0)->text());
+        ui->lineEdit_Code->setText(table->item(currentRow,1)->text());
+
+    }
+    else if(state == 3)
+    {
+        // Заголовок
         this->setWindowTitle("Copy contract");
+
     }
 
     // Подключение виджета "календарь"
@@ -27,13 +52,7 @@ addDialog::addDialog(QWidget *parent, int state, QString _contractNumber) :
     ui->dateEdit_DateReceiptResults->setCalendarPopup(true);
     ui->dateEdit_DateTransferLaboratory->setCalendarPopup(true);
 
-    // Установка текущей даты
-    ui->dateEdit_DateOfReceipt->setDate(QDate::currentDate ());
-    ui->dateEdit_DatePay->setDate(QDate::currentDate ());
-    ui->dateEdit_DateReceiptResults->setDate(QDate::currentDate ());
-    ui->dateEdit_DateTransferLaboratory->setDate(QDate::currentDate ());
 
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
     connect(ui->lineEdit_Code,SIGNAL(textChanged(QString)),SLOT(stateControl(QString)));
     connect(ui->lineEdit_ContractNumber,SIGNAL(textChanged(QString)),SLOT(stateControl(QString)));
@@ -189,33 +208,8 @@ void addDialog::on_buttonBox_accepted()
             doc.setContent(&file);
             file.close();
             QDomElement  domElement = doc.documentElement();
-            //doc.appendChild(domElement);
 
-            /*
-            QString nUrgent;
-            QString nSentToCustomer;
-
-            if (ui->checkBox_Urgent->isChecked())   nUrgent = "1";
-            else                                    nUrgent = "0";
-
-            if (ui->checkBox_SentToCustomer->isChecked()) nSentToCustomer = "1";
-            else                                          nSentToCustomer = "0";
-
-            QDomElement cnt =
-                contract(doc,
-                         ui->lineEdit_Code->text(),
-                         ui->dateEdit_DateOfReceipt->text(),
-                         ui->dateEdit_DateTransferLaboratory->text(),
-                         ui->dateEdit_DateReceiptResults->text(),
-                         ui->lineEdit_AccountNumber->text(),
-                         ui->dateEdit_DatePay->text(),
-                         nUrgent,
-                         nSentToCustomer,
-                         ui->textEdit_Comment->toPlainText()
-                         );
-            */
-
-            QDomElement element = findNecessaryNode(domElement,"contract",contractNumber);
+            QDomElement element = findNecessaryNode(domElement,"contract",ui->lineEdit_ContractNumber->text());
             domElement.removeChild(element);
 
             //QDomNode cnt =
