@@ -11,28 +11,28 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->ui->centralWidget->setLayout(ui->verticalLayout);
 
-    // Создаём контекстное меню для верхней таблицы
-    QAction *addAction = new QAction(tr("&Add..."), this);
+
+    QAction *addAction = new QAction(tr("&п■п╬п╠п╟п╡п╦я┌я▄"), this);
     //addAction->setShortcuts(QKeySequence::Open);
     addAction->setStatusTip(tr("New contract"));
     connect(addAction, SIGNAL(triggered()), this, SLOT(addSlot()));
 
-    QAction *changeAction = new QAction(tr("&Change..."), this);
+    QAction *changeAction = new QAction(tr("&п≤п╥п╪п╣п╫п╦я┌я▄"), this);
     //changeAction->setShortcuts(QKeySequence::Open);
     changeAction->setStatusTip(tr("Change current contract"));
     connect(changeAction, SIGNAL(triggered()), this, SLOT(changeSlot()));
 
-    QAction *deleteAction = new QAction(tr("&Delete..."), this);
+    QAction *deleteAction = new QAction(tr("&пёп╢п╟п╩п╦я┌я▄"), this);
     //deleteAction->setShortcuts(QKeySequence::Open);
     deleteAction->setStatusTip(tr("delete contract"));
     connect(deleteAction, SIGNAL(triggered()), this, SLOT(deleteSlot()));
 
-    QAction *copyAction = new QAction(tr("&Copy..."), this);
+    QAction *copyAction = new QAction(tr("&п п╬п©п╦я─п╬п╡п╟я┌я▄"), this);
     //copyAction->setShortcuts(QKeySequence::Open);
     copyAction->setStatusTip(tr("copy contract"));
     connect(copyAction, SIGNAL(triggered()), this, SLOT(copySlot()));
 
-    QAction *updateAction = new QAction(tr("&Update..."), this);
+    QAction *updateAction = new QAction(tr("&п·п╠п╫п╬п╡п╦я┌я▄"), this);
     //copyAction->setShortcuts(QKeySequence::Open);
     copyAction->setStatusTip(tr("update tables"));
     connect(updateAction, SIGNAL(triggered()), this, SLOT(updateTables()));
@@ -59,9 +59,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->upperTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->upperTable->setFocusPolicy(Qt::NoFocus);
 
-    // Соединение сигналов и слотов
-    connect(this->ui->upperTable,SIGNAL(cellClicked(int,int)),this, SLOT(RowSelected(int, int)));
-
     updateTables();
 }
 
@@ -75,7 +72,7 @@ void MainWindow::addSlot()
     qDebug() << "add slot activated" << ui->upperTable->currentRow();
 
     addDialog *dlg = new addDialog(this,0);
-    //connect(dlg,SIGNAL(accepted()),this,SLOT(updateTables()));
+
     this->dlg = dlg;
     dlg->exec();
     updateTables();
@@ -120,7 +117,7 @@ void MainWindow::copySlot()
 void MainWindow::updateTables()
 {
      qDebug() << "Tables will be updated";
-     // Читаем содержимое файла и грузим в дерево
+
      QDomDocument doc("contracts");
      QFile file("contracts.xml");
      if (!file.open(QIODevice::ReadOnly))

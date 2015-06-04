@@ -14,9 +14,9 @@ addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *
 
     if(state == 0)
     {
-        // Заголовок
+        // п╢п╬п╠п╟п╡п╩п╣п╫п╦п╣
         this->setWindowTitle("Add contract");
-        // Установка текущей даты
+
         ui->dateEdit_DateOfReceipt->setDate(QDate::currentDate ());
         ui->dateEdit_DatePay->setDate(QDate::currentDate ());
         ui->dateEdit_DateReceiptResults->setDate(QDate::currentDate ());
@@ -26,27 +26,36 @@ addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *
     }
     else if(state == 1)
     {
-        // Заголовок
+        // п╦п╥п╪п╣п╫п╣п╫п╦п╣
         this->setWindowTitle("Change contract");
 
     }
     else if(state == 2)
     {
-        // Заголовок
+        // я┐п╢п╟п╩п╣п╫п╦п╣
         this->setWindowTitle("Delete contract");
-        // Настройка формы
+
         ui->lineEdit_ContractNumber->setText(table->item(currentRow,0)->text());
         ui->lineEdit_Code->setText(table->item(currentRow,1)->text());
+
+        ui->dateEdit_DateOfReceipt->setDate(QDate::fromString(table->item(currentRow,2)->text(),"dd.MM.yy"));
+        ui->dateEdit_DateTransferLaboratory->setDate(QDate::fromString(table->item(currentRow,3)->text(),"dd.MM.yy"));
+        ui->dateEdit_DateReceiptResults->setDate(QDate::fromString(table->item(currentRow,4)->text(),"dd.MM.yy"));
+        ui->lineEdit_AccountNumber->setText(table->item(currentRow,5)->text());
+        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,6)->text(),"dd.MM.yy"));
+        ui->checkBox_Urgent->setChecked(1);
+        ui->checkBox_SentToCustomer->setChecked(1);
+        ui->textEdit_Comment->setText(table->item(currentRow,9)->text());
 
     }
     else if(state == 3)
     {
-        // Заголовок
+        // п╨п╬п©п╦я─п╬п╡п╟п╫п╦п╣
         this->setWindowTitle("Copy contract");
 
     }
 
-    // Подключение виджета "календарь"
+    // я┐я│я┌п╟п╫п╬п╡п╨п╟ п╢п╟я┌я▀ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌
     ui->dateEdit_DateOfReceipt->setCalendarPopup(true);
     ui->dateEdit_DatePay->setCalendarPopup(true);
     ui->dateEdit_DateReceiptResults->setCalendarPopup(true);
@@ -76,6 +85,9 @@ QDomElement addDialog::contract(QDomDocument  &domDoc,
                                 )
 {
     const QString nNumber = this->ui->lineEdit_ContractNumber->text();
+
+    qDebug() << "Urgent = " << Urgent;
+    qDebug() << "SentToCustomer = " << SentToCustomer;
 
     QDomElement domElement = makeElement(domDoc,
                                          "contract",
@@ -120,7 +132,7 @@ void addDialog::on_buttonBox_accepted()
         if (!file.exists()){
 
             qDebug() << "Not create";
-            // Если файл не создан, то создаём его, иначе дописываем в конец
+            // я└п╟п╧п╩ п╠п╢ п╫п╣ я│п╬п╥п╢п╟п╫, я│п╬п╥п╢п╟я▒п╪ п╣пЁп╬
             QDomDocument doc("contracts");
             QDomElement  domElement = doc.createElement("contracts");
             doc.appendChild(domElement);
@@ -128,11 +140,11 @@ void addDialog::on_buttonBox_accepted()
             QString nUrgent;
             QString nSentToCustomer;
 
-            if (ui->checkBox_Urgent->isChecked())   nUrgent = "1";
-            else                                    nUrgent = "0";
+            if (ui->checkBox_Urgent->isChecked())   nUrgent = "п╢п╠";
+            else                                    nUrgent = "п╬п╣я└";
 
-            if (ui->checkBox_SentToCustomer->isChecked()) nSentToCustomer = "1";
-            else                                          nSentToCustomer = "0";
+            if (ui->checkBox_SentToCustomer->isChecked()) nSentToCustomer = "п╢п╠";
+            else                                          nSentToCustomer = "п╬п╣я└";
 
             QDomElement cnt =
                 contract(doc,
@@ -157,7 +169,7 @@ void addDialog::on_buttonBox_accepted()
         else
         {
             qDebug() << "Created";
-            // Если файл создан, то дописываем в конец
+            // я└п╟п╧п╩ я│п╬п╥п╢п╟п╫, п©п╦я┬п╣п╪ п╡ п╫п╣пЁп╬
             if(file.open(QIODevice::ReadWrite)) {
                 QDomDocument doc("contracts");
                 doc.setContent(&file);
@@ -168,11 +180,11 @@ void addDialog::on_buttonBox_accepted()
                 QString nUrgent;
                 QString nSentToCustomer;
 
-                if (ui->checkBox_Urgent->isChecked())   nUrgent = "1";
-                else                                    nUrgent = "0";
+                if (ui->checkBox_Urgent->isChecked())   nUrgent = "п■п░";
+                else                                    nUrgent = "п²п∙п╒";
 
-                if (ui->checkBox_SentToCustomer->isChecked()) nSentToCustomer = "1";
-                else                                          nSentToCustomer = "0";
+                if (ui->checkBox_SentToCustomer->isChecked()) nSentToCustomer = "п■п░";
+                else                                          nSentToCustomer = "п²п∙п╒";
 
                 QDomElement cnt =
                     contract(doc,
@@ -202,7 +214,7 @@ void addDialog::on_buttonBox_accepted()
         break;
     case 2:
         qDebug() << "Deleted";
-        // Если файл создан, то удаляем ветку и перезаписываем файл
+
         if(file.open(QIODevice::ReadWrite)) {
             QDomDocument doc("contracts");
             doc.setContent(&file);
@@ -211,9 +223,6 @@ void addDialog::on_buttonBox_accepted()
 
             QDomElement element = findNecessaryNode(domElement,"contract",ui->lineEdit_ContractNumber->text());
             domElement.removeChild(element);
-
-            //QDomNode cnt =
-            //domElement.removeChild(element);
 
             if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) file.close();
 
@@ -264,7 +273,7 @@ QDomElement addDialog::findNecessaryNode(const QDomNode& node,const QString& nec
 
 void addDialog::on_buttonBox_rejected()
 {
-    // ничего не происходит
+    // п╫п╦я┤п╣пЁп╬ п╫п╣ п╢п╣п╩п╟п╣п╪
 }
 
 void addDialog::stateControl(QString text)

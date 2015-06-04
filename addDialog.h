@@ -36,11 +36,11 @@ public:
                             const QString& strAttr = QString::null,
                             const QString& strText = QString::null
                            );
-    int state;          // 0 - добавление
-                        // 1 - изменение
-                        // 2 - удаление
-                        // 3 - копирование
-    // Работа с таблицей
+    int state;          // 0 - п■п╬п╠п╟п╡п╩п╣п╫п╦п╣
+                        // 1 - п≤п╥п╪п╣п╫п╣п╫п╦п╣
+                        // 2 - пёп╢п╟п╩п╣п╫п╦п╣
+                        // 3 - п п╬п©п╦я─п╬п╡п╟п╫п╦п╣
+
     int currentRow;
     QTableWidget *table;
 
@@ -51,7 +51,7 @@ private slots:
 
     void on_buttonBox_rejected();
 
-    void stateControl(QString);    // Контроль состояния формы ввода
+    void stateControl(QString);    // п п╬п╫я┌я─п╬п╩я▄ я│п╬я│я┌п╬я▐п╫п╦я▐ я└п╬я─п╪я▀
 
 private:
     Ui::addDialog *ui;
