@@ -1,12 +1,16 @@
 #include "addDialog.h"
 #include "ui_addDialog.h"
+#include "mainwindow.h"
 
-addDialog::addDialog(QWidget *parent, int state) :
+addDialog::addDialog(QWidget *parent, int state, QString _contractNumber) :
     QDialog(parent),
     ui(new Ui::addDialog)
 {
     ui->setupUi(this);
     this->state = state;
+
+    contractNumber = _contractNumber;
+
     if(state == 0){
         this->setWindowTitle("Add contract");
     }else if(state == 1){
@@ -210,8 +214,12 @@ void addDialog::on_buttonBox_accepted()
                          ui->textEdit_Comment->toPlainText()
                          );
             */
-            QDomNode cnt =
-            domElement.removeChild(cnt);
+
+            QDomElement element = findNecessaryNode(domElement,"contract",contractNumber);
+            domElement.removeChild(element);
+
+            //QDomNode cnt =
+            //domElement.removeChild(element);
 
             if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) file.close();
 
@@ -231,29 +239,33 @@ void addDialog::on_buttonBox_accepted()
 
 QDomElement addDialog::findNecessaryNode(const QDomNode& node,const QString& necessaryName,const QString& number)
 {
+    qDebug() << 1;
     if(node.isElement())
     {
         QDomElement element = node.toElement();
         if(element.tagName() == necessaryName && element.attribute("number") == number)
             return element;
     }
-    /*
+
+    qDebug() << 2;
+
     QDomNode siblingNode = node.nextSiblingElement();
     while(!siblingNode.isNull()){
-        bool res = findNecessaryNode( siblingNode, necessaryName, number);
-        if(res)
+        QDomElement res = findNecessaryNode( siblingNode, necessaryName, number);
+        if(!res.isNull())
             return siblingNode.toElement();
         siblingNode = siblingNode.nextSiblingElement();
     }
 
+    qDebug() << 3;
+
     QDomNode childNode = node.firstChild();
     if(!childNode.isNull()){
-        bool res = findNecessaryNode( childNode, necessaryName, number);
-        if(res)
-            return true;
+        QDomElement res = findNecessaryNode( childNode, necessaryName, number);
+        if(!res.isNull()) return res;
     }
-    */
-    //return 0;
+
+    //return ;
 }
 
 void addDialog::on_buttonBox_rejected()

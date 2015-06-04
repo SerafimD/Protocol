@@ -17,7 +17,7 @@ class addDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit addDialog(QWidget *parent = 0, int state = 0);
+    explicit addDialog(QWidget *parent = 0, int state = 0, QString _contractNumber = QString::null);
     ~addDialog();
     QDomElement contract(QDomDocument  &domDoc,
                          const QString &Code,
@@ -39,6 +39,7 @@ public:
                         // 1 - изменение
                         // 2 - удаление
                         // 3 - копирование
+    QString contractNumber;
 
     QDomElement findNecessaryNode(const QDomNode& node,const QString& necessaryName,const QString& number);
 

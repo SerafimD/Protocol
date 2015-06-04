@@ -8,8 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     dlg = 0;
-
     currentRow = 0;
+    contractNumber = QString::null;
 
     this->ui->centralWidget->setLayout(ui->verticalLayout);
 
@@ -76,7 +76,7 @@ void MainWindow::addSlot()
 {
     qDebug() << "add slot activated" << ui->upperTable->currentRow();
 
-    addDialog *dlg = new addDialog(this,0);
+    addDialog *dlg = new addDialog(this,0,contractNumber);
     connect(dlg,SIGNAL(accepted()),this,SLOT(updateTables()));
     this->dlg = dlg;
     dlg->exec();
@@ -86,7 +86,7 @@ void MainWindow::changeSlot()
 {
     qDebug() << "change slot activated" << ui->upperTable->currentRow();
 
-    addDialog *dlg = new addDialog(this,1);
+    addDialog *dlg = new addDialog(this,1,contractNumber);
     dlg->exec();
 }
 
@@ -94,7 +94,7 @@ void MainWindow::deleteSlot()
 {
     qDebug() << "delete slot activated" << ui->upperTable->currentRow();
 
-    addDialog *dlg = new addDialog(this,2);
+    addDialog *dlg = new addDialog(this,2,contractNumber);
     dlg->exec();
 }
 
@@ -102,7 +102,7 @@ void MainWindow::copySlot()
 {
     qDebug() << "copy slot activated" << ui->upperTable->currentRow();
 
-    addDialog *dlg = new addDialog(this,3);
+    addDialog *dlg = new addDialog(this,3,contractNumber);
     dlg->exec();
 }
 
@@ -145,5 +145,6 @@ void MainWindow::updateTables()
 void MainWindow::RowSelected(int row, int col)
 {
     this->currentRow = row;
+    contractNumber = this->ui->upperTable->item(row,0)->text();
     qDebug() << "row = " << currentRow;
 }

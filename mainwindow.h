@@ -18,10 +18,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    int getCurrentRow(){return this->currentRow;}
+
 private:
     Ui::MainWindow *ui;
     addDialog *dlg;
     int currentRow;
+    QString contractNumber;
 
 public slots:
     void addSlot();
