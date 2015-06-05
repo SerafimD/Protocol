@@ -172,7 +172,7 @@ void MainWindow::updateDownTable()
         QDate datePaid = QDate::fromString(ui->upperTable->item(curentRow,6)->text(),"dd.MM.yyyy");
 
         // получаем дату выдачи
-        QDate dateOfIssue = datePaid.addDays(10);
+        QDate dateOfIssue = datePaid.addDays(14);
 
         // Получаем разность между датой выдачи и текущей датой (системное время)
         QString today = QDate::currentDate().toString("dd.MM.yyyy");
@@ -199,8 +199,17 @@ void MainWindow::updateDownTable()
         // получаем текущую дату оплаты
         QDate datePaid = QDate::fromString(ui->upperTable->item(curentRow,6)->text(),"dd.MM.yyyy");
 
+        QDate dateOfIssue;
+
         // получаем дату выдачи
-        QDate dateOfIssue = datePaid.addDays(1);
+        if(datePaid.dayOfWeek() != 5)
+        {
+            dateOfIssue = datePaid.addDays(1);
+        }
+        else
+        {
+            dateOfIssue = datePaid.addDays(3);
+        }
 
         // Получаем разность между датой выдачи и текущей датой (системное время)
         QString today = QDate::currentDate().toString("dd.MM.yyyy");
