@@ -74,6 +74,16 @@ addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *
         // копирование
         this->setWindowTitle("Copy contract");
 
+        ui->lineEdit_ContractNumber->setText(table->item(currentRow,0)->text());
+        ui->lineEdit_Code->setText(table->item(currentRow,1)->text());
+        ui->dateEdit_DateOfReceipt->setDate(QDate::fromString(table->item(currentRow,2)->text(),"dd.MM.yy"));
+        ui->dateEdit_DateTransferLaboratory->setDate(QDate::fromString(table->item(currentRow,3)->text(),"dd.MM.yy"));
+        ui->dateEdit_DateReceiptResults->setDate(QDate::fromString(table->item(currentRow,4)->text(),"dd.MM.yy"));
+        ui->lineEdit_AccountNumber->setText(table->item(currentRow,5)->text());
+        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,6)->text(),"dd.MM.yy"));
+        ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,7)->text(),"ДА"));
+        ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,8)->text(),"ДА"));
+        ui->textEdit_Comment->setText(table->item(currentRow,9)->text());
     }
 
     // установка даты по умолчанию
@@ -285,7 +295,10 @@ void addDialog::on_buttonBox_accepted()
             file.close();
             QDomElement  domElement = doc.documentElement();
 
-            QDomElement element = findNecessaryNode(domElement,"contract",ui->lineEdit_ContractNumber->text());
+            QDomElement element;
+            element = findNecessaryNode(domElement,"contract",ui->lineEdit_ContractNumber->text());
+            qDebug() << "find element for delete has attribute = " << element.attribute("number");
+            qDebug() << "address element = " << &element;
             domElement.removeChild(element);
 
             if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) file.close();
@@ -297,6 +310,46 @@ void addDialog::on_buttonBox_accepted()
         }
         break;
     case 3:
+        qDebug() << "Copy";
+
+        if(file.open(QIODevice::ReadWrite)) {
+            QDomDocument doc("contracts");
+            doc.setContent(&file);
+            file.close();
+            QDomElement  domElement = doc.documentElement();
+            //doc.appendChild(domElement);
+
+            QString nUrgent;
+            QString nSentToCustomer;
+
+            if (ui->checkBox_Urgent->isChecked())   nUrgent = "ДА";
+            else                                    nUrgent = "НЕТ";
+
+            if (ui->checkBox_SentToCustomer->isChecked()) nSentToCustomer = "ДА";
+            else                                          nSentToCustomer = "НЕТ";
+
+            QDomElement cnt =
+                contract(doc,
+                         ui->lineEdit_Code->text(),
+                         ui->dateEdit_DateOfReceipt->text(),
+                         ui->dateEdit_DateTransferLaboratory->text(),
+                         ui->dateEdit_DateReceiptResults->text(),
+                         ui->lineEdit_AccountNumber->text(),
+                         ui->dateEdit_DatePay->text(),
+                         nUrgent,
+                         nSentToCustomer,
+                         ui->textEdit_Comment->toPlainText()
+                         );
+
+            domElement.appendChild(cnt);
+
+            if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) file.close();
+
+            if(file.open(QIODevice::WriteOnly)) {
+                QTextStream(&file) << doc.toString();
+                file.close();
+            }
+        }
         break;
     default:
         break;
@@ -306,25 +359,34 @@ void addDialog::on_buttonBox_accepted()
 
 QDomElement addDialog::findNecessaryNode(const QDomNode& node,const QString& necessaryName,const QString& number)
 {
-    //qDebug() << 1;
+    qDebug() << 1;
     if(node.isElement())
     {
         QDomElement element = node.toElement();
+
+        qDebug() << "element.attribute(\"number\") = " << element.attribute("number");
+        qDebug() << "number = " << number;
+
         if(element.tagName() == necessaryName && element.attribute("number") == number)
+        {
+            qDebug() << "RETURNED ELEMENT HAS ATTRIBUTE = " << element.attribute("number");
+            qDebug() << "address element = " << &element;
             return element;
+        }
     }
 
-    //qDebug() << 2;
+    qDebug() << 2;
 
     QDomNode siblingNode = node.nextSiblingElement();
     while(!siblingNode.isNull()){
         QDomElement res = findNecessaryNode( siblingNode, necessaryName, number);
         if(!res.isNull())
-            return siblingNode.toElement();
+            //return siblingNode.toElement();
+            return res;
         siblingNode = siblingNode.nextSiblingElement();
     }
 
-    //qDebug() << 3;
+    qDebug() << 3;
 
     QDomNode childNode = node.firstChild();
     if(!childNode.isNull()){
