@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QItemDelegate>
+#include <QDate>
 #include "addDialog.h"
 
 namespace Ui {
@@ -28,6 +29,7 @@ public slots:
     void deleteSlot();
     void copySlot();
     void updateTables();
+    void updateDownTable();
 };
 
 class NonEditTableColumnDelegate : public QItemDelegate

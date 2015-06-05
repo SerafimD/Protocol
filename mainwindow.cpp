@@ -59,6 +59,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->upperTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->upperTable->setFocusPolicy(Qt::NoFocus);
 
+    ui->downTable->setRowCount(1);
+    ui->downTable->setItemDelegateForColumn(0, new NonEditTableColumnDelegate());
+    ui->downTable->setItemDelegateForColumn(1, new NonEditTableColumnDelegate());
+    ui->downTable->setItemDelegateForColumn(2, new NonEditTableColumnDelegate());
+
+    ui->downTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->downTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->downTable->setFocusPolicy(Qt::NoFocus);
+
+    connect(ui->upperTable,SIGNAL(cellClicked(int,int)),this,SLOT(updateDownTable()));
+
     updateTables();
 }
 
@@ -150,3 +161,63 @@ void MainWindow::updateTables()
      this->ui->downTable->resizeRowsToContents();
 }
 
+void MainWindow::updateDownTable()
+{
+    int curentRow = ui->upperTable->currentRow();
+
+    // если протокол не срочный
+    if(ui->upperTable->item(curentRow,7)->text() == "НЕТ")
+    {
+        // получаем текущую дату оплаты
+        QDate datePaid = QDate::fromString(ui->upperTable->item(curentRow,6)->text(),"dd.MM.yyyy");
+
+        // получаем дату выдачи
+        QDate dateOfIssue = datePaid.addDays(10);
+
+        // Получаем разность между датой выдачи и текущей датой (системное время)
+        QString today = QDate::currentDate().toString("dd.MM.yyyy");
+        int daysToEnd = QDate::fromString(today,"dd.MM.yyyy").daysTo(dateOfIssue);
+
+        ui->downTable->setItem(0,0,new QTableWidgetItem(dateOfIssue.toString("dd.MM.yyyy")));
+        ui->downTable->setItem(0,1,new QTableWidgetItem(QString::number(daysToEnd)));
+
+        if(daysToEnd >= 0)
+        {
+            ui->downTable->setItem(0,2,new QTableWidgetItem(QString("НЕТ")));
+        }
+        else
+        {
+            int daysDelay = QDate::fromString(today,"dd.MM.yyyy").daysTo(dateOfIssue) * -1;
+            ui->downTable->setItem(0,2,new QTableWidgetItem(QString::number(daysDelay)));
+            ui->downTable->setItem(0,1,new QTableWidgetItem(QString("0")));
+        }
+
+    }
+    // если срочный
+    else
+    {
+        // получаем текущую дату оплаты
+        QDate datePaid = QDate::fromString(ui->upperTable->item(curentRow,6)->text(),"dd.MM.yyyy");
+
+        // получаем дату выдачи
+        QDate dateOfIssue = datePaid.addDays(1);
+
+        // Получаем разность между датой выдачи и текущей датой (системное время)
+        QString today = QDate::currentDate().toString("dd.MM.yyyy");
+        int daysToEnd = QDate::fromString(today,"dd.MM.yyyy").daysTo(dateOfIssue);
+
+        ui->downTable->setItem(0,0,new QTableWidgetItem(dateOfIssue.toString("dd.MM.yyyy")));
+        ui->downTable->setItem(0,1,new QTableWidgetItem(QString::number(daysToEnd)));
+
+        if(daysToEnd >= 0)
+        {
+            ui->downTable->setItem(0,2,new QTableWidgetItem(QString("НЕТ")));
+        }
+        else
+        {
+            int daysDelay = QDate::fromString(today,"dd.MM.yyyy").daysTo(dateOfIssue) * -1;
+            ui->downTable->setItem(0,2,new QTableWidgetItem(QString::number(daysDelay)));
+            ui->downTable->setItem(0,1,new QTableWidgetItem(QString("0")));
+        }
+    }
+}
