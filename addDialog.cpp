@@ -29,6 +29,17 @@ addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *
         // изменение
         this->setWindowTitle("Change contract");
 
+        ui->lineEdit_ContractNumber->setText(table->item(currentRow,0)->text());
+        ui->lineEdit_Code->setText(table->item(currentRow,1)->text());
+        ui->dateEdit_DateOfReceipt->setDate(QDate::fromString(table->item(currentRow,2)->text(),"dd.MM.yy"));
+        ui->dateEdit_DateTransferLaboratory->setDate(QDate::fromString(table->item(currentRow,3)->text(),"dd.MM.yy"));
+        ui->dateEdit_DateReceiptResults->setDate(QDate::fromString(table->item(currentRow,4)->text(),"dd.MM.yy"));
+        ui->lineEdit_AccountNumber->setText(table->item(currentRow,5)->text());
+        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,6)->text(),"dd.MM.yy"));
+        ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,7)->text(),"ДА"));
+        ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,8)->text(),"ДА"));
+        ui->textEdit_Comment->setText(table->item(currentRow,9)->text());
+
     }
     else if(state == 2)
     {
@@ -221,6 +232,49 @@ void addDialog::on_buttonBox_accepted()
         }
         break;
     case 1:
+        qDebug() << "Updated";
+
+        if(file.open(QIODevice::ReadWrite)) {
+            QDomDocument doc("contracts");
+            doc.setContent(&file);
+            file.close();
+            QDomElement  domElement = doc.documentElement();
+
+            QDomElement element = findNecessaryNode(domElement,"contract",ui->lineEdit_ContractNumber->text());
+            domElement.removeChild(element);
+
+            QString nUrgent;
+            QString nSentToCustomer;
+
+            if (ui->checkBox_Urgent->isChecked())   nUrgent = "ДА";
+            else                                    nUrgent = "НЕТ";
+
+            if (ui->checkBox_SentToCustomer->isChecked()) nSentToCustomer = "ДА";
+            else                                          nSentToCustomer = "НЕТ";
+
+            QDomElement cnt =
+                contract(doc,
+                         ui->lineEdit_Code->text(),
+                         ui->dateEdit_DateOfReceipt->text(),
+                         ui->dateEdit_DateTransferLaboratory->text(),
+                         ui->dateEdit_DateReceiptResults->text(),
+                         ui->lineEdit_AccountNumber->text(),
+                         ui->dateEdit_DatePay->text(),
+                         nUrgent,
+                         nSentToCustomer,
+                         ui->textEdit_Comment->toPlainText()
+                         );
+
+            domElement.appendChild(cnt);
+
+            if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) file.close();
+
+            if(file.open(QIODevice::WriteOnly)) {
+                QTextStream(&file) << doc.toString();
+                file.close();
+            }
+        }
+
         break;
     case 2:
         qDebug() << "Deleted";
