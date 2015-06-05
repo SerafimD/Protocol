@@ -21,7 +21,7 @@ public:
     explicit addDialog(QWidget *parent = 0, int state = 0, int _currentRow = 0, QTableWidget *_table = 0);
     ~addDialog();
     QDomElement contract(QDomDocument  &domDoc,
-                         const QString &Code,
+                         //const QString &Code,
                          const QString &DateOfReceipt,
                          const QString &DateTransferLaboratory,
                          const QString &DateReceiptResults,
@@ -33,7 +33,8 @@ public:
                        );
     QDomElement makeElement( QDomDocument& domDoc,
                             const QString& strName,
-                            const QString& strAttr = QString::null,
+                            const QString& strAttr1 = QString::null,
+                            const QString& strAttr2 = QString::null,
                             const QString& strText = QString::null
                            );
     int state;          // 0 - Добавление
@@ -44,7 +45,10 @@ public:
     int currentRow;
     QTableWidget *table;
 
-    QDomElement findNecessaryNode(const QDomNode& node,const QString& necessaryName,const QString& number);
+    QDomElement findNecessaryNode(const QDomNode& node,
+                                  const QString& necessaryName,
+                                  const QString& number,
+                                  const QString& code);
 
 private slots:
     void on_buttonBox_accepted();

@@ -145,14 +145,21 @@ void MainWindow::updateTables()
 
      for (int i = 0; i < childs.length(); i ++) {
          QDomElement child = childs.at(i).toElement();
+
          QDomAttr a = child.attributeNode("number");
          QString NumberContract = a.value();
+
+         QDomAttr b = child.attributeNode("code");
+         QString Code = b.value();
+
          ui->upperTable->setItem(i,0,new QTableWidgetItem(NumberContract));
+         ui->upperTable->setItem(i,1,new QTableWidgetItem(Code));
+
          QDomNodeList hosts = child.childNodes();
          for(int j = 0 ; j < hosts.length(); j++)
          {
              QDomElement host = hosts.at(j).toElement();
-             ui->upperTable->setItem(i,j+1,new QTableWidgetItem(host.text()));
+             ui->upperTable->setItem(i,j+2,new QTableWidgetItem(host.text()));
          }
     }
     this->ui->upperTable->resizeColumnsToContents();

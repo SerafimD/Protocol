@@ -1,14 +1,23 @@
 <!DOCTYPE contracts>
 <contracts>
- <contract number="1">
-  <Code>1</Code>
-  <DateOfReceipt>03.06.2015</DateOfReceipt>
-  <DateTransferLaboratory>14.06.2015</DateTransferLaboratory>
-  <DateReceiptResults>26.06.2015</DateReceiptResults>
+ <contract code="1" number="1">
+  <DateOfReceipt>05.06.2015</DateOfReceipt>
+  <DateTransferLaboratory>05.06.2015</DateTransferLaboratory>
+  <DateReceiptResults>05.06.2015</DateReceiptResults>
+  <AccountNumber>1</AccountNumber>
+  <DatePay>05.06.2015</DatePay>
+  <Urgent>ДА</Urgent>
+  <SentToCustomer>НЕТ</SentToCustomer>
+  <Comment/>
+ </contract>
+ <contract code="4" number="1">
+  <DateOfReceipt>05.06.2015</DateOfReceipt>
+  <DateTransferLaboratory>05.06.2015</DateTransferLaboratory>
+  <DateReceiptResults>05.06.2015</DateReceiptResults>
   <AccountNumber/>
-  <DatePay>04.06.2015</DatePay>
+  <DatePay>05.06.2015</DatePay>
   <Urgent>НЕТ</Urgent>
   <SentToCustomer>НЕТ</SentToCustomer>
-  <Comment>11</Comment>
+  <Comment/>
  </contract>
 </contracts>

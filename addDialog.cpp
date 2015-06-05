@@ -104,7 +104,7 @@ addDialog::~addDialog()
 }
 
 QDomElement addDialog::contract(QDomDocument  &domDoc,
-                                const QString &Code,
+                                //const QString &Code,
                                 const QString &DateOfReceipt,
                                 const QString &DateTransferLaboratory,
                                 const QString &DateReceiptResults,
@@ -116,34 +116,45 @@ QDomElement addDialog::contract(QDomDocument  &domDoc,
                                 )
 {
     const QString nNumber = this->ui->lineEdit_ContractNumber->text();
+    const QString nCode = this->ui->lineEdit_Code->text();
 
     qDebug() << "Urgent = " << Urgent;
     qDebug() << "SentToCustomer = " << SentToCustomer;
 
     QDomElement domElement = makeElement(domDoc,
                                          "contract",
-                                         nNumber
+                                         nNumber,
+                                         nCode
                                         );
-    domElement.appendChild(makeElement(domDoc, "Code", "", Code));
-    domElement.appendChild(makeElement(domDoc, "DateOfReceipt", "", DateOfReceipt));
-    domElement.appendChild(makeElement(domDoc, "DateTransferLaboratory", "", DateTransferLaboratory));
-    domElement.appendChild(makeElement(domDoc, "DateReceiptResults", "", DateReceiptResults));
-    domElement.appendChild(makeElement(domDoc, "AccountNumber", "", AccountNumber));
-    domElement.appendChild(makeElement(domDoc, "DatePay", "", DatePay));
-    domElement.appendChild(makeElement(domDoc, "Urgent", "", Urgent));
-    domElement.appendChild(makeElement(domDoc, "SentToCustomer", "", SentToCustomer));
-    domElement.appendChild(makeElement(domDoc, "Comment", "", Comment));
+    //domElement.appendChild(makeElement(domDoc, "Code", "", Code));
+    domElement.appendChild(makeElement(domDoc, "DateOfReceipt", "", "", DateOfReceipt));
+    domElement.appendChild(makeElement(domDoc, "DateTransferLaboratory", "", "", DateTransferLaboratory));
+    domElement.appendChild(makeElement(domDoc, "DateReceiptResults", "", "", DateReceiptResults));
+    domElement.appendChild(makeElement(domDoc, "AccountNumber", "", "", AccountNumber));
+    domElement.appendChild(makeElement(domDoc, "DatePay", "", "", DatePay));
+    domElement.appendChild(makeElement(domDoc, "Urgent", "", "", Urgent));
+    domElement.appendChild(makeElement(domDoc, "SentToCustomer", "", "", SentToCustomer));
+    domElement.appendChild(makeElement(domDoc, "Comment", "", "", Comment));
 
     return domElement;
 }
 
-QDomElement addDialog::makeElement(QDomDocument &domDoc, const QString &strName, const QString &strAttr, const QString &strText)
+QDomElement addDialog::makeElement(QDomDocument &domDoc,
+                                   const QString &strName,
+                                   const QString &strAttr1,
+                                   const QString &strAttr2,
+                                   const QString &strText)
 {
     QDomElement domElement = domDoc.createElement(strName);
 
-        if (!strAttr.isEmpty()) {
+        if (!strAttr1.isEmpty()) {
             QDomAttr domAttr = domDoc.createAttribute("number");
-            domAttr.setValue(strAttr);
+            domAttr.setValue(strAttr1);
+            domElement.setAttributeNode(domAttr);
+        }
+        if (!strAttr2.isEmpty()) {
+            QDomAttr domAttr = domDoc.createAttribute("code");
+            domAttr.setValue(strAttr2);
             domElement.setAttributeNode(domAttr);
         }
 
@@ -151,6 +162,7 @@ QDomElement addDialog::makeElement(QDomDocument &domDoc, const QString &strName,
             QDomText domText = domDoc.createTextNode(strText);
             domElement.appendChild(domText);
         }
+
         return domElement;
 }
 
@@ -179,7 +191,7 @@ void addDialog::on_buttonBox_accepted()
 
             QDomElement cnt =
                 contract(doc,
-                         ui->lineEdit_Code->text(),
+                         //ui->lineEdit_Code->text(),
                          ui->dateEdit_DateOfReceipt->text(),
                          ui->dateEdit_DateTransferLaboratory->text(),
                          ui->dateEdit_DateReceiptResults->text(),
@@ -219,7 +231,7 @@ void addDialog::on_buttonBox_accepted()
 
                 QDomElement cnt =
                     contract(doc,
-                             ui->lineEdit_Code->text(),
+                             //ui->lineEdit_Code->text(),
                              ui->dateEdit_DateOfReceipt->text(),
                              ui->dateEdit_DateTransferLaboratory->text(),
                              ui->dateEdit_DateReceiptResults->text(),
@@ -250,7 +262,10 @@ void addDialog::on_buttonBox_accepted()
             file.close();
             QDomElement  domElement = doc.documentElement();
 
-            QDomElement element = findNecessaryNode(domElement,"contract",ui->lineEdit_ContractNumber->text());
+            QDomElement element = findNecessaryNode(domElement,
+                                                    "contract",
+                                                    ui->lineEdit_ContractNumber->text(),
+                                                    ui->lineEdit_Code->text());
             domElement.removeChild(element);
 
             QString nUrgent;
@@ -264,7 +279,7 @@ void addDialog::on_buttonBox_accepted()
 
             QDomElement cnt =
                 contract(doc,
-                         ui->lineEdit_Code->text(),
+                         //ui->lineEdit_Code->text(),
                          ui->dateEdit_DateOfReceipt->text(),
                          ui->dateEdit_DateTransferLaboratory->text(),
                          ui->dateEdit_DateReceiptResults->text(),
@@ -296,7 +311,10 @@ void addDialog::on_buttonBox_accepted()
             QDomElement  domElement = doc.documentElement();
 
             QDomElement element;
-            element = findNecessaryNode(domElement,"contract",ui->lineEdit_ContractNumber->text());
+            element = findNecessaryNode(domElement,
+                                        "contract",
+                                        ui->lineEdit_ContractNumber->text(),
+                                        ui->lineEdit_Code->text());
             qDebug() << "find element for delete has attribute = " << element.attribute("number");
             qDebug() << "address element = " << &element;
             domElement.removeChild(element);
@@ -330,7 +348,7 @@ void addDialog::on_buttonBox_accepted()
 
             QDomElement cnt =
                 contract(doc,
-                         ui->lineEdit_Code->text(),
+                         //ui->lineEdit_Code->text(),
                          ui->dateEdit_DateOfReceipt->text(),
                          ui->dateEdit_DateTransferLaboratory->text(),
                          ui->dateEdit_DateReceiptResults->text(),
@@ -357,7 +375,10 @@ void addDialog::on_buttonBox_accepted()
 
 }
 
-QDomElement addDialog::findNecessaryNode(const QDomNode& node,const QString& necessaryName,const QString& number)
+QDomElement addDialog::findNecessaryNode(const QDomNode& node,
+                                         const QString& necessaryName,
+                                         const QString& number,
+                                         const QString& code)
 {
     qDebug() << 1;
     if(node.isElement())
@@ -367,7 +388,9 @@ QDomElement addDialog::findNecessaryNode(const QDomNode& node,const QString& nec
         qDebug() << "element.attribute(\"number\") = " << element.attribute("number");
         qDebug() << "number = " << number;
 
-        if(element.tagName() == necessaryName && element.attribute("number") == number)
+        if(element.tagName() == necessaryName
+                && element.attribute("number") == number
+                && element.attribute("code") == code)
         {
             qDebug() << "RETURNED ELEMENT HAS ATTRIBUTE = " << element.attribute("number");
             qDebug() << "address element = " << &element;
@@ -379,7 +402,7 @@ QDomElement addDialog::findNecessaryNode(const QDomNode& node,const QString& nec
 
     QDomNode siblingNode = node.nextSiblingElement();
     while(!siblingNode.isNull()){
-        QDomElement res = findNecessaryNode( siblingNode, necessaryName, number);
+        QDomElement res = findNecessaryNode( siblingNode, necessaryName, number, code);
         if(!res.isNull())
             //return siblingNode.toElement();
             return res;
@@ -390,7 +413,7 @@ QDomElement addDialog::findNecessaryNode(const QDomNode& node,const QString& nec
 
     QDomNode childNode = node.firstChild();
     if(!childNode.isNull()){
-        QDomElement res = findNecessaryNode( childNode, necessaryName, number);
+        QDomElement res = findNecessaryNode( childNode, necessaryName, number, code);
         if(!res.isNull()) return res;
     }
 
