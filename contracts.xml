@@ -1,23 +1,59 @@
 <!DOCTYPE contracts>
 <contracts>
- <contract code="1" number="1">
-  <DateOfReceipt>05.06.2015</DateOfReceipt>
-  <DateTransferLaboratory>05.06.2015</DateTransferLaboratory>
-  <DateReceiptResults>05.06.2015</DateReceiptResults>
-  <AccountNumber>1</AccountNumber>
-  <DatePay>05.06.2015</DatePay>
-  <Urgent>ДА</Urgent>
-  <SentToCustomer>НЕТ</SentToCustomer>
-  <Comment/>
- </contract>
- <contract code="4" number="1">
+ <contract number="1" code="4">
   <DateOfReceipt>05.06.2015</DateOfReceipt>
   <DateTransferLaboratory>05.06.2015</DateTransferLaboratory>
   <DateReceiptResults>05.06.2015</DateReceiptResults>
   <AccountNumber/>
-  <DatePay>05.06.2015</DatePay>
+  <DatePay>30.05.2015</DatePay>
   <Urgent>НЕТ</Urgent>
   <SentToCustomer>НЕТ</SentToCustomer>
   <Comment/>
+ </contract>
+ <contract number="5" code="5">
+  <DateOfReceipt>05.06.2015</DateOfReceipt>
+  <DateTransferLaboratory>05.06.2015</DateTransferLaboratory>
+  <DateReceiptResults>05.06.2015</DateReceiptResults>
+  <AccountNumber/>
+  <DatePay>02.06.2015</DatePay>
+  <Urgent>НЕТ</Urgent>
+  <SentToCustomer>НЕТ</SentToCustomer>
+  <Comment/>
+ </contract>
+ <contract number="4" code="4">
+  <DateOfReceipt>05.06.2015</DateOfReceipt>
+  <DateTransferLaboratory>05.06.2015</DateTransferLaboratory>
+  <DateReceiptResults>05.06.2015</DateReceiptResults>
+  <AccountNumber/>
+  <DatePay>03.06.2015</DatePay>
+  <Urgent>НЕТ</Urgent>
+  <SentToCustomer>НЕТ</SentToCustomer>
+  <Comment/>
+ </contract>
+ <contract number="3" code="3">
+  <DateOfReceipt>05.06.2015</DateOfReceipt>
+  <DateTransferLaboratory>05.06.2015</DateTransferLaboratory>
+  <DateReceiptResults>05.06.2015</DateReceiptResults>
+  <AccountNumber/>
+  <DatePay>03.06.2015</DatePay>
+  <Urgent>ДА</Urgent>
+  <SentToCustomer>ДА</SentToCustomer>
+  <Comment/>
+ </contract>
+ <contract number="1" code="1">
+  <DateOfReceipt>05.06.2015</DateOfReceipt>
+  <DateTransferLaboratory>05.06.2015</DateTransferLaboratory>
+  <DateReceiptResults>05.06.2015</DateReceiptResults>
+  <AccountNumber>1</AccountNumber>
+  <DatePay>03.06.2015</DatePay>
+  <Urgent>ДА</Urgent>
+  <SentToCustomer>ДА</SentToCustomer>
+  <Comment>12312312
+513
+5gre
+gd
+fh
+rtjuh
+w45u</Comment>
  </contract>
 </contracts>

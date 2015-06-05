@@ -30,6 +30,12 @@ public slots:
     void copySlot();
     void updateTables();
     void updateDownTable();
+    void setDelayColor(int row);
+    void setSendColor(int row);
+    void setDelayColorTable();
+signals:
+    void delayContract(int);
+    void sendContract(int);
 };
 
 class NonEditTableColumnDelegate : public QItemDelegate

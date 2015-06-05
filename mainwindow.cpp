@@ -69,6 +69,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->downTable->setFocusPolicy(Qt::NoFocus);
 
     connect(ui->upperTable,SIGNAL(cellClicked(int,int)),this,SLOT(updateDownTable()));
+    connect(this,SIGNAL(delayContract(int)),this,SLOT(setDelayColor(int)));
+    connect(this,SIGNAL(sendContract(int)),this,SLOT(setSendColor(int)));
 
     updateTables();
 }
@@ -162,10 +164,13 @@ void MainWindow::updateTables()
              ui->upperTable->setItem(i,j+2,new QTableWidgetItem(host.text()));
          }
     }
+
+    setDelayColorTable();
+
     this->ui->upperTable->resizeColumnsToContents();
-     this->ui->upperTable->resizeRowsToContents();
+    this->ui->upperTable->resizeRowsToContents();
     this->ui->downTable->resizeColumnsToContents();
-     this->ui->downTable->resizeRowsToContents();
+    this->ui->downTable->resizeRowsToContents();
 }
 
 void MainWindow::updateDownTable()
@@ -197,6 +202,7 @@ void MainWindow::updateDownTable()
             int daysDelay = QDate::fromString(today,"dd.MM.yyyy").daysTo(dateOfIssue) * -1;
             ui->downTable->setItem(0,2,new QTableWidgetItem(QString::number(daysDelay)));
             ui->downTable->setItem(0,1,new QTableWidgetItem(QString("0")));
+            if(ui->upperTable->item(curentRow,8)->text() != "ДА") emit delayContract(curentRow);
         }
 
     }
@@ -234,6 +240,81 @@ void MainWindow::updateDownTable()
             int daysDelay = QDate::fromString(today,"dd.MM.yyyy").daysTo(dateOfIssue) * -1;
             ui->downTable->setItem(0,2,new QTableWidgetItem(QString::number(daysDelay)));
             ui->downTable->setItem(0,1,new QTableWidgetItem(QString("0")));
+            if(ui->upperTable->item(curentRow,8)->text() != "ДА") emit delayContract(curentRow);
         }
+    }
+}
+
+void MainWindow::setDelayColor(int row)
+{
+    qDebug() << "Строка будет покрашена в красный = " << row;
+    ui->upperTable->item(row,0)->setBackground(Qt::red);
+    ui->upperTable->item(row,1)->setBackground(Qt::red);
+    ui->upperTable->item(row,2)->setBackground(Qt::red);
+    ui->upperTable->item(row,3)->setBackground(Qt::red);
+    ui->upperTable->item(row,4)->setBackground(Qt::red);
+    ui->upperTable->item(row,5)->setBackground(Qt::red);
+    ui->upperTable->item(row,6)->setBackground(Qt::red);
+    ui->upperTable->item(row,7)->setBackground(Qt::red);
+    ui->upperTable->item(row,8)->setBackground(Qt::red);
+}
+
+void MainWindow::setSendColor(int row)
+{
+    qDebug() << "Строка будет покрашена в зелёный = " << row;
+    ui->upperTable->item(row,0)->setBackground(Qt::green);
+    ui->upperTable->item(row,1)->setBackground(Qt::green);
+    ui->upperTable->item(row,2)->setBackground(Qt::green);
+    ui->upperTable->item(row,3)->setBackground(Qt::green);
+    ui->upperTable->item(row,4)->setBackground(Qt::green);
+    ui->upperTable->item(row,5)->setBackground(Qt::green);
+    ui->upperTable->item(row,6)->setBackground(Qt::green);
+    ui->upperTable->item(row,7)->setBackground(Qt::green);
+    ui->upperTable->item(row,8)->setBackground(Qt::green);
+}
+
+
+
+void MainWindow::setDelayColorTable()
+{
+    for(int i = 0 ; i < ui->upperTable->rowCount() ; i++)
+    {
+        // если протокол не срочный
+        if(ui->upperTable->item(i,7)->text() == "НЕТ")
+        {
+            // получаем текущую дату оплаты
+            QDate datePaid = QDate::fromString(ui->upperTable->item(i,6)->text(),"dd.MM.yyyy");
+
+            // получаем дату выдачи
+            QDate dateOfIssue = datePaid.addDays(14);
+
+            // Получаем разность между датой выдачи и текущей датой (системное время)
+            QString today = QDate::currentDate().toString("dd.MM.yyyy");
+            int daysToEnd = QDate::fromString(today,"dd.MM.yyyy").daysTo(dateOfIssue);
+
+            if(daysToEnd < 0) emit delayContract(i);
+
+        }
+        // если срочный
+        else
+        {
+            // получаем текущую дату оплаты
+            QDate datePaid = QDate::fromString(ui->upperTable->item(i,6)->text(),"dd.MM.yyyy");
+
+            QDate dateOfIssue;
+
+            // получаем дату выдачи
+            if(datePaid.dayOfWeek() != 5) dateOfIssue = datePaid.addDays(1);
+            else dateOfIssue = datePaid.addDays(3);
+
+            // Получаем разность между датой выдачи и текущей датой (системное время)
+            QString today = QDate::currentDate().toString("dd.MM.yyyy");
+            int daysToEnd = QDate::fromString(today,"dd.MM.yyyy").daysTo(dateOfIssue);
+
+            if(daysToEnd < 0) emit delayContract(i);
+
+        }
+
+        if(ui->upperTable->item(i,8)->text() == "ДА") emit sendContract(i);
     }
 }
