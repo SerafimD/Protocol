@@ -31,14 +31,16 @@ addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *
 
         ui->lineEdit_ContractNumber->setText(table->item(currentRow,0)->text());
         ui->lineEdit_Code->setText(table->item(currentRow,1)->text());
-        ui->dateEdit_DateOfReceipt->setDate(QDate::fromString(table->item(currentRow,2)->text(),"dd.MM.yyyy"));
-        ui->dateEdit_DateTransferLaboratory->setDate(QDate::fromString(table->item(currentRow,3)->text(),"dd.MM.yyyy"));
-        ui->dateEdit_DateReceiptResults->setDate(QDate::fromString(table->item(currentRow,4)->text(),"dd.MM.yyyy"));
-        ui->lineEdit_AccountNumber->setText(table->item(currentRow,5)->text());
-        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,6)->text(),"dd.MM.yyyy"));
-        ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,7)->text(),"ДА"));
-        ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,8)->text(),"ДА"));
-        ui->textEdit_Comment->setText(table->item(currentRow,9)->text());
+        ui->lineEdit_Company->setText(table->item(currentRow,2)->text());
+        ui->lineEdit_Sample->setText(table->item(currentRow,3)->text());
+        ui->dateEdit_DateOfReceipt->setDate(QDate::fromString(table->item(currentRow,4)->text(),"dd.MM.yyyy"));
+        ui->dateEdit_DateTransferLaboratory->setDate(QDate::fromString(table->item(currentRow,5)->text(),"dd.MM.yyyy"));
+        ui->dateEdit_DateReceiptResults->setDate(QDate::fromString(table->item(currentRow,6)->text(),"dd.MM.yyyy"));
+        ui->lineEdit_AccountNumber->setText(table->item(currentRow,7)->text());
+        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,8)->text(),"dd.MM.yyyy"));
+        ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,9)->text(),"ДА"));
+        ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,10)->text(),"ДА"));
+        ui->textEdit_Comment->setText(table->item(currentRow,11)->text());
 
     }
     else if(state == 2)
@@ -48,17 +50,21 @@ addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *
 
         ui->lineEdit_ContractNumber->setText(table->item(currentRow,0)->text());
         ui->lineEdit_Code->setText(table->item(currentRow,1)->text());
-        ui->dateEdit_DateOfReceipt->setDate(QDate::fromString(table->item(currentRow,2)->text(),"dd.MM.yyyy"));
-        ui->dateEdit_DateTransferLaboratory->setDate(QDate::fromString(table->item(currentRow,3)->text(),"dd.MM.yyyy"));
-        ui->dateEdit_DateReceiptResults->setDate(QDate::fromString(table->item(currentRow,4)->text(),"dd.MM.yyyy"));
-        ui->lineEdit_AccountNumber->setText(table->item(currentRow,5)->text());
-        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,6)->text(),"dd.MM.yyyy"));
-        ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,7)->text(),"ДА"));
-        ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,8)->text(),"ДА"));
-        ui->textEdit_Comment->setText(table->item(currentRow,9)->text());
+        ui->lineEdit_Company->setText(table->item(currentRow,2)->text());
+        ui->lineEdit_Sample->setText(table->item(currentRow,3)->text());
+        ui->dateEdit_DateOfReceipt->setDate(QDate::fromString(table->item(currentRow,4)->text(),"dd.MM.yyyy"));
+        ui->dateEdit_DateTransferLaboratory->setDate(QDate::fromString(table->item(currentRow,5)->text(),"dd.MM.yyyy"));
+        ui->dateEdit_DateReceiptResults->setDate(QDate::fromString(table->item(currentRow,6)->text(),"dd.MM.yyyy"));
+        ui->lineEdit_AccountNumber->setText(table->item(currentRow,7)->text());
+        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,8)->text(),"dd.MM.yyyy"));
+        ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,9)->text(),"ДА"));
+        ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,10)->text(),"ДА"));
+        ui->textEdit_Comment->setText(table->item(currentRow,11)->text());
 
         ui->lineEdit_ContractNumber->setEnabled(false);
         ui->lineEdit_Code->setEnabled(false);
+        ui->lineEdit_Company->setEnabled(false);
+        ui->lineEdit_Sample->setEnabled(false);
         ui->dateEdit_DateOfReceipt->setEnabled(false);
         ui->dateEdit_DateTransferLaboratory->setEnabled(false);
         ui->dateEdit_DateReceiptResults->setEnabled(false);
@@ -76,14 +82,16 @@ addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *
 
         ui->lineEdit_ContractNumber->setText(table->item(currentRow,0)->text());
         ui->lineEdit_Code->setText(table->item(currentRow,1)->text());
-        ui->dateEdit_DateOfReceipt->setDate(QDate::fromString(table->item(currentRow,2)->text(),"dd.MM.yyyy"));
-        ui->dateEdit_DateTransferLaboratory->setDate(QDate::fromString(table->item(currentRow,3)->text(),"dd.MM.yyyy"));
-        ui->dateEdit_DateReceiptResults->setDate(QDate::fromString(table->item(currentRow,4)->text(),"dd.MM.yyyy"));
-        ui->lineEdit_AccountNumber->setText(table->item(currentRow,5)->text());
-        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,6)->text(),"dd.MM.yyyy"));
-        ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,7)->text(),"ДА"));
-        ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,8)->text(),"ДА"));
-        ui->textEdit_Comment->setText(table->item(currentRow,9)->text());
+        ui->lineEdit_Company->setText(table->item(currentRow,2)->text());
+        ui->lineEdit_Sample->setText(table->item(currentRow,3)->text());
+        ui->dateEdit_DateOfReceipt->setDate(QDate::fromString(table->item(currentRow,4)->text(),"dd.MM.yyyy"));
+        ui->dateEdit_DateTransferLaboratory->setDate(QDate::fromString(table->item(currentRow,5)->text(),"dd.MM.yyyy"));
+        ui->dateEdit_DateReceiptResults->setDate(QDate::fromString(table->item(currentRow,6)->text(),"dd.MM.yyyy"));
+        ui->lineEdit_AccountNumber->setText(table->item(currentRow,7)->text());
+        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,8)->text(),"dd.MM.yyyy"));
+        ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,9)->text(),"ДА"));
+        ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,10)->text(),"ДА"));
+        ui->textEdit_Comment->setText(table->item(currentRow,11)->text());
     }
 
     // установка даты по умолчанию
@@ -105,6 +113,8 @@ addDialog::~addDialog()
 
 QDomElement addDialog::contract(QDomDocument  &domDoc,
                                 //const QString &Code,
+                                const QString &Company,
+                                const QString &Sample,
                                 const QString &DateOfReceipt,
                                 const QString &DateTransferLaboratory,
                                 const QString &DateReceiptResults,
@@ -127,6 +137,8 @@ QDomElement addDialog::contract(QDomDocument  &domDoc,
                                          nCode
                                         );
     //domElement.appendChild(makeElement(domDoc, "Code", "", Code));
+    domElement.appendChild(makeElement(domDoc, "Company","","", Company));
+    domElement.appendChild(makeElement(domDoc, "Sample","","", Sample));
     domElement.appendChild(makeElement(domDoc, "DateOfReceipt", "", "", DateOfReceipt));
     domElement.appendChild(makeElement(domDoc, "DateTransferLaboratory", "", "", DateTransferLaboratory));
     domElement.appendChild(makeElement(domDoc, "DateReceiptResults", "", "", DateReceiptResults));
@@ -192,6 +204,8 @@ void addDialog::on_buttonBox_accepted()
             QDomElement cnt =
                 contract(doc,
                          //ui->lineEdit_Code->text(),
+                         ui->lineEdit_Company->text(),
+                         ui->lineEdit_Sample->text(),
                          ui->dateEdit_DateOfReceipt->text(),
                          ui->dateEdit_DateTransferLaboratory->text(),
                          ui->dateEdit_DateReceiptResults->text(),
@@ -232,6 +246,8 @@ void addDialog::on_buttonBox_accepted()
                 QDomElement cnt =
                     contract(doc,
                              //ui->lineEdit_Code->text(),
+                             ui->lineEdit_Company->text(),
+                             ui->lineEdit_Sample->text(),
                              ui->dateEdit_DateOfReceipt->text(),
                              ui->dateEdit_DateTransferLaboratory->text(),
                              ui->dateEdit_DateReceiptResults->text(),
@@ -280,6 +296,8 @@ void addDialog::on_buttonBox_accepted()
             QDomElement cnt =
                 contract(doc,
                          //ui->lineEdit_Code->text(),
+                         ui->lineEdit_Company->text(),
+                         ui->lineEdit_Sample->text(),
                          ui->dateEdit_DateOfReceipt->text(),
                          ui->dateEdit_DateTransferLaboratory->text(),
                          ui->dateEdit_DateReceiptResults->text(),
@@ -349,6 +367,8 @@ void addDialog::on_buttonBox_accepted()
             QDomElement cnt =
                 contract(doc,
                          //ui->lineEdit_Code->text(),
+                         ui->lineEdit_Company->text(),
+                         ui->lineEdit_Sample->text(),
                          ui->dateEdit_DateOfReceipt->text(),
                          ui->dateEdit_DateTransferLaboratory->text(),
                          ui->dateEdit_DateReceiptResults->text(),

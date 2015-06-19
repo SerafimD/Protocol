@@ -54,6 +54,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->upperTable->setItemDelegateForColumn(7, new NonEditTableColumnDelegate());
     ui->upperTable->setItemDelegateForColumn(8, new NonEditTableColumnDelegate());
     ui->upperTable->setItemDelegateForColumn(9, new NonEditTableColumnDelegate());
+    ui->upperTable->setItemDelegateForColumn(10, new NonEditTableColumnDelegate());
+    ui->upperTable->setItemDelegateForColumn(11, new NonEditTableColumnDelegate());
 
     ui->upperTable->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->upperTable->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -178,10 +180,10 @@ void MainWindow::updateDownTable()
     int curentRow = ui->upperTable->currentRow();
 
     // если протокол не срочный
-    if(ui->upperTable->item(curentRow,7)->text() == "НЕТ")
+    if(ui->upperTable->item(curentRow,9)->text() == "НЕТ")
     {
         // получаем текущую дату оплаты
-        QDate datePaid = QDate::fromString(ui->upperTable->item(curentRow,6)->text(),"dd.MM.yyyy");
+        QDate datePaid = QDate::fromString(ui->upperTable->item(curentRow,8)->text(),"dd.MM.yyyy");
 
         // получаем дату выдачи
         QDate dateOfIssue = datePaid.addDays(14);
@@ -202,7 +204,7 @@ void MainWindow::updateDownTable()
             int daysDelay = QDate::fromString(today,"dd.MM.yyyy").daysTo(dateOfIssue) * -1;
             ui->downTable->setItem(0,2,new QTableWidgetItem(QString::number(daysDelay)));
             ui->downTable->setItem(0,1,new QTableWidgetItem(QString("0")));
-            if(ui->upperTable->item(curentRow,8)->text() != "ДА") emit delayContract(curentRow);
+            if(ui->upperTable->item(curentRow,10)->text() != "ДА") emit delayContract(curentRow);
         }
 
     }
@@ -210,7 +212,7 @@ void MainWindow::updateDownTable()
     else
     {
         // получаем текущую дату оплаты
-        QDate datePaid = QDate::fromString(ui->upperTable->item(curentRow,6)->text(),"dd.MM.yyyy");
+        QDate datePaid = QDate::fromString(ui->upperTable->item(curentRow,8)->text(),"dd.MM.yyyy");
 
         QDate dateOfIssue;
 
@@ -240,7 +242,7 @@ void MainWindow::updateDownTable()
             int daysDelay = QDate::fromString(today,"dd.MM.yyyy").daysTo(dateOfIssue) * -1;
             ui->downTable->setItem(0,2,new QTableWidgetItem(QString::number(daysDelay)));
             ui->downTable->setItem(0,1,new QTableWidgetItem(QString("0")));
-            if(ui->upperTable->item(curentRow,8)->text() != "ДА") emit delayContract(curentRow);
+            if(ui->upperTable->item(curentRow,10)->text() != "ДА") emit delayContract(curentRow);
         }
     }
 }
@@ -257,6 +259,8 @@ void MainWindow::setDelayColor(int row)
     ui->upperTable->item(row,6)->setBackground(Qt::red);
     ui->upperTable->item(row,7)->setBackground(Qt::red);
     ui->upperTable->item(row,8)->setBackground(Qt::red);
+    ui->upperTable->item(row,9)->setBackground(Qt::red);
+    ui->upperTable->item(row,10)->setBackground(Qt::red);
 }
 
 void MainWindow::setSendColor(int row)
@@ -271,6 +275,8 @@ void MainWindow::setSendColor(int row)
     ui->upperTable->item(row,6)->setBackground(Qt::green);
     ui->upperTable->item(row,7)->setBackground(Qt::green);
     ui->upperTable->item(row,8)->setBackground(Qt::green);
+    ui->upperTable->item(row,9)->setBackground(Qt::green);
+    ui->upperTable->item(row,10)->setBackground(Qt::green);
 }
 
 
@@ -280,10 +286,10 @@ void MainWindow::setDelayColorTable()
     for(int i = 0 ; i < ui->upperTable->rowCount() ; i++)
     {
         // если протокол не срочный
-        if(ui->upperTable->item(i,7)->text() == "НЕТ")
+        if(ui->upperTable->item(i,9)->text() == "НЕТ")
         {
             // получаем текущую дату оплаты
-            QDate datePaid = QDate::fromString(ui->upperTable->item(i,6)->text(),"dd.MM.yyyy");
+            QDate datePaid = QDate::fromString(ui->upperTable->item(i,8)->text(),"dd.MM.yyyy");
 
             // получаем дату выдачи
             QDate dateOfIssue = datePaid.addDays(14);
@@ -299,7 +305,7 @@ void MainWindow::setDelayColorTable()
         else
         {
             // получаем текущую дату оплаты
-            QDate datePaid = QDate::fromString(ui->upperTable->item(i,6)->text(),"dd.MM.yyyy");
+            QDate datePaid = QDate::fromString(ui->upperTable->item(i,8)->text(),"dd.MM.yyyy");
 
             QDate dateOfIssue;
 
@@ -315,6 +321,6 @@ void MainWindow::setDelayColorTable()
 
         }
 
-        if(ui->upperTable->item(i,8)->text() == "ДА") emit sendContract(i);
+        if(ui->upperTable->item(i,10)->text() == "ДА") emit sendContract(i);
     }
 }

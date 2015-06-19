@@ -22,6 +22,8 @@ public:
     ~addDialog();
     QDomElement contract(QDomDocument  &domDoc,
                          //const QString &Code,
+                         const QString &Company,
+                         const QString &Sample,
                          const QString &DateOfReceipt,
                          const QString &DateTransferLaboratory,
                          const QString &DateReceiptResults,
