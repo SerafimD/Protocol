@@ -73,6 +73,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->upperTable,SIGNAL(cellClicked(int,int)),this,SLOT(updateDownTable()));
     connect(this,SIGNAL(delayContract(int)),this,SLOT(setDelayColor(int)));
     connect(this,SIGNAL(sendContract(int)),this,SLOT(setSendColor(int)));
+    connect(ui->actionAllContracts,SIGNAL(changed()),this,SLOT(updateTables()));
+    connect(ui->actionTodayContracts,SIGNAL(changed()),this,SLOT(updateTables()));
+    connect(ui->actionPaidContracts,SIGNAL(changed()),this,SLOT(updateTables()));
+    connect(ui->actionNotPaidContracts,SIGNAL(changed()),this,SLOT(updateTables()));
+
+    connect(ui->actionAllContracts,SIGNAL(toggled(bool)),this,SLOT(menuControl(bool)));
+    connect(ui->actionTodayContracts,SIGNAL(toggled(bool)),this,SLOT(menuControl(bool)));
+    connect(ui->actionPaidContracts,SIGNAL(toggled(bool)),this,SLOT(menuControl(bool)));
+    connect(ui->actionNotPaidContracts,SIGNAL(toggled(bool)),this,SLOT(menuControl(bool)));
 
     updateTables();
 }
@@ -322,5 +331,34 @@ void MainWindow::setDelayColorTable()
         }
 
         if(ui->upperTable->item(i,10)->text() == "ДА") emit sendContract(i);
+    }
+}
+
+void MainWindow::menuControl(bool state)
+{
+    //qDebug() << "Menu control activated";
+    if(ui->actionAllContracts->isChecked())
+    {
+        ui->actionTodayContracts->setChecked(false);
+        ui->actionPaidContracts->setChecked(false);
+        ui->actionNotPaidContracts->setChecked(false);
+    }
+    if(ui->actionTodayContracts->isChecked())
+    {
+        ui->actionAllContracts->setChecked(false);
+        ui->actionPaidContracts->setChecked(false);
+        ui->actionNotPaidContracts->setChecked(false);
+    }
+    if(ui->actionPaidContracts->isChecked())
+    {
+        ui->actionTodayContracts->setChecked(false);
+        ui->actionAllContracts->setChecked(false);
+        ui->actionNotPaidContracts->setChecked(false);
+    }
+    if(ui->actionNotPaidContracts->isChecked())
+    {
+        ui->actionTodayContracts->setChecked(false);
+        ui->actionAllContracts->setChecked(false);
+        ui->actionPaidContracts->setChecked(false);
     }
 }

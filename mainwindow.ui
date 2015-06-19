@@ -182,6 +182,9 @@
     <addaction name="actionSave"/>
    </widget>
    <widget class="QMenu" name="menuDocs">
+    <property name="tearOffEnabled">
+     <bool>true</bool>
+    </property>
     <property name="title">
      <string>Сводная информация</string>
     </property>
@@ -228,16 +231,25 @@
    </property>
   </action>
   <action name="actionTodayContracts">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>К выдаче сегодня</string>
    </property>
   </action>
   <action name="actionPaidContracts">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Оплаченные договора</string>
    </property>
   </action>
   <action name="actionNotPaidContracts">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Не оплаченные договора</string>
    </property>
@@ -253,6 +265,9 @@
    </property>
   </action>
   <action name="actionAllContracts">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Все договора</string>
    </property>

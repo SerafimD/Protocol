@@ -24,15 +24,17 @@ private:
     addDialog *dlg;
 
 public slots:
-    void addSlot();
-    void changeSlot();
-    void deleteSlot();
-    void copySlot();
-    void updateTables();
-    void updateDownTable();
-    void setDelayColor(int row);
+    void addSlot();                 // Добавить контракт
+    void changeSlot();              // Изменить контракт
+    void deleteSlot();              // Удалить контракт
+    void copySlot();                // Скопировать контракт
+    void updateTables();            // Обновить таблицы
+    void updateDownTable();         // Обновление подчинённой таблицы
+    void setDelayColor(int row);    // Покраска строки таблицы
     void setSendColor(int row);
     void setDelayColorTable();
+    void menuControl(bool state);
+
 signals:
     void delayContract(int);
     void sendContract(int);
