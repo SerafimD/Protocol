@@ -21,7 +21,7 @@ addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *
         ui->dateEdit_DatePay->setDate(QDate::currentDate ());
         ui->dateEdit_DateReceiptResults->setDate(QDate::currentDate ());
         ui->dateEdit_DateTransferLaboratory->setDate(QDate::currentDate ());
-
+        ui->dateEdit_DatePay->setEnabled(false);
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     }
     else if(state == 1)
@@ -37,7 +37,11 @@ addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *
         ui->dateEdit_DateTransferLaboratory->setDate(QDate::fromString(table->item(currentRow,5)->text(),"dd.MM.yyyy"));
         ui->dateEdit_DateReceiptResults->setDate(QDate::fromString(table->item(currentRow,6)->text(),"dd.MM.yyyy"));
         ui->lineEdit_AccountNumber->setText(table->item(currentRow,7)->text());
+
         ui->checkBox_Pay->setChecked(!QString::compare(table->item(currentRow,8)->text(),"ДА"));
+        if(ui->checkBox_Pay->isChecked()) ui->dateEdit_DatePay->setEnabled(true);
+        else                              ui->dateEdit_DatePay->setEnabled(false);
+
         ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,9)->text(),"dd.MM.yyyy"));
         ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,10)->text(),"ДА"));
         ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,11)->text(),"ДА"));
@@ -90,7 +94,11 @@ addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *
         ui->dateEdit_DateTransferLaboratory->setDate(QDate::fromString(table->item(currentRow,5)->text(),"dd.MM.yyyy"));
         ui->dateEdit_DateReceiptResults->setDate(QDate::fromString(table->item(currentRow,6)->text(),"dd.MM.yyyy"));
         ui->lineEdit_AccountNumber->setText(table->item(currentRow,7)->text());
+
         ui->checkBox_Pay->setChecked(!QString::compare(table->item(currentRow,8)->text(),"ДА"));
+        if(ui->checkBox_Pay->isChecked()) ui->dateEdit_DatePay->setEnabled(true);
+        else                              ui->dateEdit_DatePay->setEnabled(false);
+
         ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,9)->text(),"dd.MM.yyyy"));
         ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,10)->text(),"ДА"));
         ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,11)->text(),"ДА"));
@@ -468,6 +476,8 @@ QDomElement addDialog::findNecessaryNode(const QDomNode& node,
 void addDialog::PayState()
 {
     qDebug() << "addDialog::PayState()";
+    if(ui->checkBox_Pay->isChecked()) ui->dateEdit_DatePay->setEnabled(true);
+    else                              ui->dateEdit_DatePay->setEnabled(false);
 }
 
 void addDialog::on_buttonBox_rejected()
