@@ -11,7 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->ui->centralWidget->setLayout(ui->verticalLayout);
 
-
     QAction *addAction = new QAction(tr("&Добавить"), this);
     //addAction->setShortcuts(QKeySequence::Open);
     addAction->setStatusTip(tr("Новый договор"));
@@ -56,6 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->upperTable->setItemDelegateForColumn(9, new NonEditTableColumnDelegate());
     ui->upperTable->setItemDelegateForColumn(10, new NonEditTableColumnDelegate());
     ui->upperTable->setItemDelegateForColumn(11, new NonEditTableColumnDelegate());
+    ui->upperTable->setItemDelegateForColumn(12, new NonEditTableColumnDelegate());
 
     ui->upperTable->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->upperTable->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -78,10 +78,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionPaidContracts,SIGNAL(changed()),this,SLOT(updateTables()));
     connect(ui->actionNotPaidContracts,SIGNAL(changed()),this,SLOT(updateTables()));
 
-    connect(ui->actionAllContracts,SIGNAL(toggled(bool)),this,SLOT(menuControl(bool)));
-    connect(ui->actionTodayContracts,SIGNAL(toggled(bool)),this,SLOT(menuControl(bool)));
-    connect(ui->actionPaidContracts,SIGNAL(toggled(bool)),this,SLOT(menuControl(bool)));
-    connect(ui->actionNotPaidContracts,SIGNAL(toggled(bool)),this,SLOT(menuControl(bool)));
+
+    connect(ui->actionAllContracts,SIGNAL(triggered()),this,SLOT(menuControl()));
+    connect(ui->actionTodayContracts,SIGNAL(toggled(bool)),this,SLOT(updateTables()));
+    connect(ui->actionPaidContracts,SIGNAL(toggled(bool)),this,SLOT(updateTables()));
+    connect(ui->actionNotPaidContracts,SIGNAL(toggled(bool)),this,SLOT(updateTables()));
+
 
     updateTables();
 }
@@ -189,10 +191,10 @@ void MainWindow::updateDownTable()
     int curentRow = ui->upperTable->currentRow();
 
     // если протокол не срочный
-    if(ui->upperTable->item(curentRow,9)->text() == "НЕТ")
+    if(ui->upperTable->item(curentRow,10)->text() == "НЕТ")
     {
         // получаем текущую дату оплаты
-        QDate datePaid = QDate::fromString(ui->upperTable->item(curentRow,8)->text(),"dd.MM.yyyy");
+        QDate datePaid = QDate::fromString(ui->upperTable->item(curentRow,9)->text(),"dd.MM.yyyy");
 
         // получаем дату выдачи
         QDate dateOfIssue = datePaid.addDays(14);
@@ -213,7 +215,7 @@ void MainWindow::updateDownTable()
             int daysDelay = QDate::fromString(today,"dd.MM.yyyy").daysTo(dateOfIssue) * -1;
             ui->downTable->setItem(0,2,new QTableWidgetItem(QString::number(daysDelay)));
             ui->downTable->setItem(0,1,new QTableWidgetItem(QString("0")));
-            if(ui->upperTable->item(curentRow,10)->text() != "ДА") emit delayContract(curentRow);
+            if(ui->upperTable->item(curentRow,11)->text() != "ДА") emit delayContract(curentRow);
         }
 
     }
@@ -221,7 +223,7 @@ void MainWindow::updateDownTable()
     else
     {
         // получаем текущую дату оплаты
-        QDate datePaid = QDate::fromString(ui->upperTable->item(curentRow,8)->text(),"dd.MM.yyyy");
+        QDate datePaid = QDate::fromString(ui->upperTable->item(curentRow,9)->text(),"dd.MM.yyyy");
 
         QDate dateOfIssue;
 
@@ -251,7 +253,7 @@ void MainWindow::updateDownTable()
             int daysDelay = QDate::fromString(today,"dd.MM.yyyy").daysTo(dateOfIssue) * -1;
             ui->downTable->setItem(0,2,new QTableWidgetItem(QString::number(daysDelay)));
             ui->downTable->setItem(0,1,new QTableWidgetItem(QString("0")));
-            if(ui->upperTable->item(curentRow,10)->text() != "ДА") emit delayContract(curentRow);
+            if(ui->upperTable->item(curentRow,11)->text() != "ДА") emit delayContract(curentRow);
         }
     }
 }
@@ -270,6 +272,7 @@ void MainWindow::setDelayColor(int row)
     ui->upperTable->item(row,8)->setBackground(Qt::red);
     ui->upperTable->item(row,9)->setBackground(Qt::red);
     ui->upperTable->item(row,10)->setBackground(Qt::red);
+    ui->upperTable->item(row,11)->setBackground(Qt::red);
 }
 
 void MainWindow::setSendColor(int row)
@@ -286,6 +289,7 @@ void MainWindow::setSendColor(int row)
     ui->upperTable->item(row,8)->setBackground(Qt::green);
     ui->upperTable->item(row,9)->setBackground(Qt::green);
     ui->upperTable->item(row,10)->setBackground(Qt::green);
+    ui->upperTable->item(row,11)->setBackground(Qt::green);
 }
 
 
@@ -295,10 +299,10 @@ void MainWindow::setDelayColorTable()
     for(int i = 0 ; i < ui->upperTable->rowCount() ; i++)
     {
         // если протокол не срочный
-        if(ui->upperTable->item(i,9)->text() == "НЕТ")
+        if(ui->upperTable->item(i,10)->text() == "НЕТ")
         {
             // получаем текущую дату оплаты
-            QDate datePaid = QDate::fromString(ui->upperTable->item(i,8)->text(),"dd.MM.yyyy");
+            QDate datePaid = QDate::fromString(ui->upperTable->item(i,9)->text(),"dd.MM.yyyy");
 
             // получаем дату выдачи
             QDate dateOfIssue = datePaid.addDays(14);
@@ -314,7 +318,7 @@ void MainWindow::setDelayColorTable()
         else
         {
             // получаем текущую дату оплаты
-            QDate datePaid = QDate::fromString(ui->upperTable->item(i,8)->text(),"dd.MM.yyyy");
+            QDate datePaid = QDate::fromString(ui->upperTable->item(i,9)->text(),"dd.MM.yyyy");
 
             QDate dateOfIssue;
 
@@ -330,35 +334,15 @@ void MainWindow::setDelayColorTable()
 
         }
 
-        if(ui->upperTable->item(i,10)->text() == "ДА") emit sendContract(i);
+        if(ui->upperTable->item(i,11)->text() == "ДА") emit sendContract(i);
     }
 }
 
-void MainWindow::menuControl(bool state)
+void MainWindow::menuControl()
 {
-    //qDebug() << "Menu control activated";
-    if(ui->actionAllContracts->isChecked())
-    {
-        ui->actionTodayContracts->setChecked(false);
-        ui->actionPaidContracts->setChecked(false);
-        ui->actionNotPaidContracts->setChecked(false);
-    }
-    if(ui->actionTodayContracts->isChecked())
-    {
-        ui->actionAllContracts->setChecked(false);
-        ui->actionPaidContracts->setChecked(false);
-        ui->actionNotPaidContracts->setChecked(false);
-    }
-    if(ui->actionPaidContracts->isChecked())
-    {
-        ui->actionTodayContracts->setChecked(false);
-        ui->actionAllContracts->setChecked(false);
-        ui->actionNotPaidContracts->setChecked(false);
-    }
-    if(ui->actionNotPaidContracts->isChecked())
-    {
-        ui->actionTodayContracts->setChecked(false);
-        ui->actionAllContracts->setChecked(false);
-        ui->actionPaidContracts->setChecked(false);
-    }
+    qDebug() << "MainWindow::menuControl(bool state)";
+    ui->actionTodayContracts->setChecked(false);
+    ui->actionPaidContracts->setChecked(false);
+    ui->actionNotPaidContracts->setChecked(false);
+    updateTables();
 }

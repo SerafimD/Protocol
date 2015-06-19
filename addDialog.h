@@ -28,6 +28,7 @@ public:
                          const QString &DateTransferLaboratory,
                          const QString &DateReceiptResults,
                          const QString &AccountNumber,
+                         const QString &Pay,
                          const QString &DatePay,
                          const QString &Urgent,
                          const QString &SentToCustomer,
@@ -51,6 +52,8 @@ public:
                                   const QString& necessaryName,
                                   const QString& number,
                                   const QString& code);
+public slots:
+    void PayState();
 
 private slots:
     void on_buttonBox_accepted();

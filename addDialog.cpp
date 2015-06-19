@@ -37,10 +37,11 @@ addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *
         ui->dateEdit_DateTransferLaboratory->setDate(QDate::fromString(table->item(currentRow,5)->text(),"dd.MM.yyyy"));
         ui->dateEdit_DateReceiptResults->setDate(QDate::fromString(table->item(currentRow,6)->text(),"dd.MM.yyyy"));
         ui->lineEdit_AccountNumber->setText(table->item(currentRow,7)->text());
-        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,8)->text(),"dd.MM.yyyy"));
-        ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,9)->text(),"ДА"));
-        ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,10)->text(),"ДА"));
-        ui->textEdit_Comment->setText(table->item(currentRow,11)->text());
+        ui->checkBox_Pay->setChecked(!QString::compare(table->item(currentRow,8)->text(),"ДА"));
+        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,9)->text(),"dd.MM.yyyy"));
+        ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,10)->text(),"ДА"));
+        ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,11)->text(),"ДА"));
+        ui->textEdit_Comment->setText(table->item(currentRow,12)->text());
 
     }
     else if(state == 2)
@@ -56,10 +57,11 @@ addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *
         ui->dateEdit_DateTransferLaboratory->setDate(QDate::fromString(table->item(currentRow,5)->text(),"dd.MM.yyyy"));
         ui->dateEdit_DateReceiptResults->setDate(QDate::fromString(table->item(currentRow,6)->text(),"dd.MM.yyyy"));
         ui->lineEdit_AccountNumber->setText(table->item(currentRow,7)->text());
-        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,8)->text(),"dd.MM.yyyy"));
-        ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,9)->text(),"ДА"));
-        ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,10)->text(),"ДА"));
-        ui->textEdit_Comment->setText(table->item(currentRow,11)->text());
+        ui->checkBox_Pay->setChecked(!QString::compare(table->item(currentRow,8)->text(),"ДА"));
+        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,9)->text(),"dd.MM.yyyy"));
+        ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,10)->text(),"ДА"));
+        ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,11)->text(),"ДА"));
+        ui->textEdit_Comment->setText(table->item(currentRow,12)->text());
 
         ui->lineEdit_ContractNumber->setEnabled(false);
         ui->lineEdit_Code->setEnabled(false);
@@ -88,10 +90,11 @@ addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *
         ui->dateEdit_DateTransferLaboratory->setDate(QDate::fromString(table->item(currentRow,5)->text(),"dd.MM.yyyy"));
         ui->dateEdit_DateReceiptResults->setDate(QDate::fromString(table->item(currentRow,6)->text(),"dd.MM.yyyy"));
         ui->lineEdit_AccountNumber->setText(table->item(currentRow,7)->text());
-        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,8)->text(),"dd.MM.yyyy"));
-        ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,9)->text(),"ДА"));
-        ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,10)->text(),"ДА"));
-        ui->textEdit_Comment->setText(table->item(currentRow,11)->text());
+        ui->checkBox_Pay->setChecked(!QString::compare(table->item(currentRow,8)->text(),"ДА"));
+        ui->dateEdit_DatePay->setDate(QDate::fromString(table->item(currentRow,9)->text(),"dd.MM.yyyy"));
+        ui->checkBox_Urgent->setChecked(!QString::compare(table->item(currentRow,10)->text(),"ДА"));
+        ui->checkBox_SentToCustomer->setChecked(!QString::compare(table->item(currentRow,11)->text(),"ДА"));
+        ui->textEdit_Comment->setText(table->item(currentRow,12)->text());
     }
 
     // установка даты по умолчанию
@@ -101,9 +104,9 @@ addDialog::addDialog(QWidget *parent, int state, int _currentRow, QTableWidget *
     ui->dateEdit_DateTransferLaboratory->setCalendarPopup(true);
 
 
-
     connect(ui->lineEdit_Code,SIGNAL(textChanged(QString)),SLOT(stateControl(QString)));
     connect(ui->lineEdit_ContractNumber,SIGNAL(textChanged(QString)),SLOT(stateControl(QString)));
+    connect(ui->checkBox_Pay,SIGNAL(clicked()),SLOT(PayState()));
 }
 
 addDialog::~addDialog()
@@ -119,6 +122,7 @@ QDomElement addDialog::contract(QDomDocument  &domDoc,
                                 const QString &DateTransferLaboratory,
                                 const QString &DateReceiptResults,
                                 const QString &AccountNumber,
+                                const QString &Pay,
                                 const QString &DatePay,
                                 const QString &Urgent,
                                 const QString &SentToCustomer,
@@ -143,6 +147,7 @@ QDomElement addDialog::contract(QDomDocument  &domDoc,
     domElement.appendChild(makeElement(domDoc, "DateTransferLaboratory", "", "", DateTransferLaboratory));
     domElement.appendChild(makeElement(domDoc, "DateReceiptResults", "", "", DateReceiptResults));
     domElement.appendChild(makeElement(domDoc, "AccountNumber", "", "", AccountNumber));
+    domElement.appendChild(makeElement(domDoc, "Pay", "", "", Pay));
     domElement.appendChild(makeElement(domDoc, "DatePay", "", "", DatePay));
     domElement.appendChild(makeElement(domDoc, "Urgent", "", "", Urgent));
     domElement.appendChild(makeElement(domDoc, "SentToCustomer", "", "", SentToCustomer));
@@ -194,12 +199,16 @@ void addDialog::on_buttonBox_accepted()
 
             QString nUrgent;
             QString nSentToCustomer;
+            QString nPay;
 
             if (ui->checkBox_Urgent->isChecked())   nUrgent = "ДА";
             else                                    nUrgent = "НЕТ";
 
             if (ui->checkBox_SentToCustomer->isChecked()) nSentToCustomer = "ДА";
             else                                          nSentToCustomer = "НЕТ";
+
+            if (ui->checkBox_Pay->isChecked()) nPay = "ДА";
+            else                               nPay = "НЕТ";
 
             QDomElement cnt =
                 contract(doc,
@@ -210,6 +219,7 @@ void addDialog::on_buttonBox_accepted()
                          ui->dateEdit_DateTransferLaboratory->text(),
                          ui->dateEdit_DateReceiptResults->text(),
                          ui->lineEdit_AccountNumber->text(),
+                         nPay,
                          ui->dateEdit_DatePay->text(),
                          nUrgent,
                          nSentToCustomer,
@@ -236,12 +246,16 @@ void addDialog::on_buttonBox_accepted()
 
                 QString nUrgent;
                 QString nSentToCustomer;
+                QString nPay;
 
                 if (ui->checkBox_Urgent->isChecked())   nUrgent = "ДА";
                 else                                    nUrgent = "НЕТ";
 
                 if (ui->checkBox_SentToCustomer->isChecked()) nSentToCustomer = "ДА";
                 else                                          nSentToCustomer = "НЕТ";
+
+                if (ui->checkBox_Pay->isChecked()) nPay = "ДА";
+                else                               nPay = "НЕТ";
 
                 QDomElement cnt =
                     contract(doc,
@@ -252,6 +266,7 @@ void addDialog::on_buttonBox_accepted()
                              ui->dateEdit_DateTransferLaboratory->text(),
                              ui->dateEdit_DateReceiptResults->text(),
                              ui->lineEdit_AccountNumber->text(),
+                             nPay,
                              ui->dateEdit_DatePay->text(),
                              nUrgent,
                              nSentToCustomer,
@@ -286,12 +301,16 @@ void addDialog::on_buttonBox_accepted()
 
             QString nUrgent;
             QString nSentToCustomer;
+            QString nPay;
 
             if (ui->checkBox_Urgent->isChecked())   nUrgent = "ДА";
             else                                    nUrgent = "НЕТ";
 
             if (ui->checkBox_SentToCustomer->isChecked()) nSentToCustomer = "ДА";
             else                                          nSentToCustomer = "НЕТ";
+
+            if (ui->checkBox_Pay->isChecked()) nPay = "ДА";
+            else                               nPay = "НЕТ";
 
             QDomElement cnt =
                 contract(doc,
@@ -302,6 +321,7 @@ void addDialog::on_buttonBox_accepted()
                          ui->dateEdit_DateTransferLaboratory->text(),
                          ui->dateEdit_DateReceiptResults->text(),
                          ui->lineEdit_AccountNumber->text(),
+                         nPay,
                          ui->dateEdit_DatePay->text(),
                          nUrgent,
                          nSentToCustomer,
@@ -357,12 +377,16 @@ void addDialog::on_buttonBox_accepted()
 
             QString nUrgent;
             QString nSentToCustomer;
+            QString nPay;
 
             if (ui->checkBox_Urgent->isChecked())   nUrgent = "ДА";
             else                                    nUrgent = "НЕТ";
 
             if (ui->checkBox_SentToCustomer->isChecked()) nSentToCustomer = "ДА";
             else                                          nSentToCustomer = "НЕТ";
+
+            if (ui->checkBox_Pay->isChecked()) nPay = "ДА";
+            else                               nPay = "НЕТ";
 
             QDomElement cnt =
                 contract(doc,
@@ -373,6 +397,7 @@ void addDialog::on_buttonBox_accepted()
                          ui->dateEdit_DateTransferLaboratory->text(),
                          ui->dateEdit_DateReceiptResults->text(),
                          ui->lineEdit_AccountNumber->text(),
+                         nPay,
                          ui->dateEdit_DatePay->text(),
                          nUrgent,
                          nSentToCustomer,
@@ -438,6 +463,11 @@ QDomElement addDialog::findNecessaryNode(const QDomNode& node,
     }
 
     //return ;
+}
+
+void addDialog::PayState()
+{
+    qDebug() << "addDialog::PayState()";
 }
 
 void addDialog::on_buttonBox_rejected()

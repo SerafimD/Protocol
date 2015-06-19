@@ -33,7 +33,7 @@ public slots:
     void setDelayColor(int row);    // Покраска строки таблицы
     void setSendColor(int row);
     void setDelayColorTable();
-    void menuControl(bool state);
+    void menuControl();
 
 signals:
     void delayContract(int);

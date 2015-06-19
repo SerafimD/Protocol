@@ -10,19 +10,19 @@
     <x>0</x>
     <y>0</y>
     <width>607</width>
-    <height>500</height>
+    <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>607</width>
-    <height>500</height>
+    <height>600</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>607</width>
-    <height>500</height>
+    <height>600</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -32,7 +32,7 @@
    <property name="geometry">
     <rect>
      <x>240</x>
-     <y>460</y>
+     <y>550</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -50,7 +50,7 @@
      <x>20</x>
      <y>10</y>
      <width>561</width>
-     <height>441</height>
+     <height>531</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -61,7 +61,7 @@
       </property>
      </widget>
     </item>
-    <item row="14" column="0">
+    <item row="15" column="0">
      <widget class="QLabel" name="label_SentToCustomer">
       <property name="text">
        <string>Отправлен заказчику</string>
@@ -74,10 +74,17 @@
     <item row="3" column="1">
      <widget class="QLineEdit" name="lineEdit_Company"/>
     </item>
-    <item row="15" column="0">
+    <item row="16" column="0">
      <widget class="QLabel" name="label_Comment">
       <property name="text">
        <string>Комментарий к договору</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_Sample">
+      <property name="text">
+       <string>Образец</string>
       </property>
      </widget>
     </item>
@@ -88,7 +95,7 @@
       </property>
      </widget>
     </item>
-    <item row="15" column="1">
+    <item row="16" column="1">
      <widget class="QTextEdit" name="textEdit_Comment"/>
     </item>
     <item row="5" column="0">
@@ -98,7 +105,7 @@
       </property>
      </widget>
     </item>
-    <item row="13" column="1">
+    <item row="14" column="1">
      <widget class="QCheckBox" name="checkBox_Urgent">
       <property name="text">
        <string/>
@@ -125,7 +132,7 @@
       </property>
      </widget>
     </item>
-    <item row="12" column="1">
+    <item row="13" column="1">
      <widget class="QDateEdit" name="dateEdit_DatePay">
       <property name="displayFormat">
        <string>dd.MM.yyyy</string>
@@ -139,7 +146,7 @@
       </property>
      </widget>
     </item>
-    <item row="12" column="0">
+    <item row="13" column="0">
      <widget class="QLabel" name="label_DatePay">
       <property name="text">
        <string>Дата оплаты</string>
@@ -160,14 +167,14 @@
       </property>
      </widget>
     </item>
-    <item row="13" column="0">
+    <item row="14" column="0">
      <widget class="QLabel" name="label_Urgent">
       <property name="text">
        <string>Срочный</string>
       </property>
      </widget>
     </item>
-    <item row="14" column="1">
+    <item row="15" column="1">
      <widget class="QCheckBox" name="checkBox_SentToCustomer">
       <property name="text">
        <string/>
@@ -184,6 +191,9 @@
       </property>
      </widget>
     </item>
+    <item row="4" column="1">
+     <widget class="QLineEdit" name="lineEdit_Sample"/>
+    </item>
     <item row="9" column="1">
      <widget class="QDateEdit" name="dateEdit_DateReceiptResults">
       <property name="displayFormat">
@@ -191,15 +201,19 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="label_Sample">
+    <item row="12" column="1">
+     <widget class="QCheckBox" name="checkBox_Pay">
       <property name="text">
-       <string>Образец</string>
+       <string/>
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
-     <widget class="QLineEdit" name="lineEdit_Sample"/>
+    <item row="12" column="0">
+     <widget class="QLabel" name="label_Pay">
+      <property name="text">
+       <string>Оплачен</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

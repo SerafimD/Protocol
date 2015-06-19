@@ -51,7 +51,7 @@
         <bool>false</bool>
        </property>
        <property name="columnCount">
-        <number>12</number>
+        <number>13</number>
        </property>
        <attribute name="horizontalHeaderCascadingSectionResizes">
         <bool>true</bool>
@@ -108,6 +108,11 @@
        <column>
         <property name="text">
          <string>Номер счёта</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Оплачен</string>
         </property>
        </column>
        <column>
@@ -173,18 +178,7 @@
      <height>25</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>Файл</string>
-    </property>
-    <addaction name="actionNew"/>
-    <addaction name="actionOpen"/>
-    <addaction name="actionSave"/>
-   </widget>
    <widget class="QMenu" name="menuDocs">
-    <property name="tearOffEnabled">
-     <bool>true</bool>
-    </property>
     <property name="title">
      <string>Сводная информация</string>
     </property>
@@ -202,7 +196,6 @@
     <addaction name="actionHelp"/>
     <addaction name="actionAbout"/>
    </widget>
-   <addaction name="menuFile"/>
    <addaction name="menuDocs"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -266,7 +259,7 @@
   </action>
   <action name="actionAllContracts">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Все договора</string>
