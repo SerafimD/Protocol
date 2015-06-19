@@ -190,7 +190,7 @@ void MainWindow::updateTables()
      QDomElement root = doc.documentElement();
      QDomNodeList childs = root.childNodes();
 
-     ui->upperTable->setRowCount(childs.length());
+     //ui->upperTable->setRowCount(childs.length());
 
      if(actionPaid)
      {
