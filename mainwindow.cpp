@@ -593,6 +593,7 @@ void MainWindow::clearSendContracts()
 {
     QFile file("contracts.xml");
     QMessageBox msgBox;
+    msgBox.setWindowTitle("Очистка");
     msgBox.setText("Из системы будут удалены протоколы\nотправленные заказчикам.");
     msgBox.setInformativeText("Вы уверены?");
     msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
