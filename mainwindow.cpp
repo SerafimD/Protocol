@@ -11,7 +11,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->ui->centralWidget->setLayout(ui->verticalLayout);
 
-    this->ui->mainToolBar->addAction(style()->standardIcon(QStyle::SP_TrashIcon),"",this,SLOT(clearSendContracts()));
+    this->ui->mainToolBar->addAction(style()->standardIcon(QStyle::SP_TrashIcon),"Удалить отправленные протоколы",this,SLOT(clearSendContracts()));
+    this->ui->mainToolBar->addAction(style()->standardIcon(QStyle::SP_BrowserReload),"Обновить",this,SLOT(updateTables()));
+
     this->ui->actionQuit->setIcon(style()->standardIcon(QStyle::SP_MessageBoxCritical));
 
     QAction *addAction = new QAction(tr("&Добавить"), this);
@@ -77,6 +79,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this,SIGNAL(delayContract(int)),this,SLOT(setDelayColor(int)));
     connect(this,SIGNAL(sendContract(int)),this,SLOT(setSendColor(int)));
     connect(ui->actionQuit,SIGNAL(triggered()),this,SLOT(quitSlot()));
+    connect(ui->actionAbout,SIGNAL(triggered()),this,SLOT(viewAboutDialog()));
     connect(ui->actionAllContracts,SIGNAL(changed()),this,SLOT(updateTables()));
     connect(ui->actionTodayContracts,SIGNAL(changed()),this,SLOT(updateTables()));
     connect(ui->actionPaidContracts,SIGNAL(changed()),this,SLOT(updateTables()));
@@ -683,3 +686,13 @@ bool MainWindow::getRowStatus(QString currentPayDate, QString urgent)
         }
         return false;
 }
+
+void MainWindow::viewAboutDialog()
+{
+    //qDebug() << "MainWindow::viewAboutDialog()";
+    AboutDialog *about;
+    about = new AboutDialog();
+    about->exec();
+}
+
+

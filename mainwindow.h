@@ -8,6 +8,7 @@
 #include <QDate>
 #include <QStyle>
 #include "addDialog.h"
+#include "aboutdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -43,6 +44,7 @@ public slots:
     void menuControl();
     void clearSendContracts();      // Слот для обработки сигнала очистки всех отправленных протоколов
     bool getRowStatus(QString currentPayDate, QString urgent);  // Получить статус текущего элемента по оплате
+    void viewAboutDialog();         // Слот обработки пункта меню "О программе"
 
 signals:
     void delayContract(int);
