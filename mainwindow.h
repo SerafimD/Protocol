@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QItemDelegate>
+#include <QMessageBox>
 #include <QDate>
 #include <QStyle>
 #include "addDialog.h"
@@ -19,12 +20,17 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    QDomElement findNecessaryNode(const QDomNode& node,
+                                  const QString& necessaryName,
+                                  const QString& number,
+                                  const QString& code);
 
 private:
     Ui::MainWindow *ui;
     addDialog *dlg;
 
 public slots:
+    void quitSlot();                // Слот выхода из программы
     void addSlot();                 // Добавить контракт
     void changeSlot();              // Изменить контракт
     void deleteSlot();              // Удалить контракт

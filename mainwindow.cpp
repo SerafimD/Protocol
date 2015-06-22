@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->ui->centralWidget->setLayout(ui->verticalLayout);
 
     this->ui->mainToolBar->addAction(style()->standardIcon(QStyle::SP_TrashIcon),"",this,SLOT(clearSendContracts()));
+    this->ui->actionQuit->setIcon(style()->standardIcon(QStyle::SP_MessageBoxCritical));
 
     QAction *addAction = new QAction(tr("&Добавить"), this);
     //addAction->setShortcuts(QKeySequence::Open);
@@ -75,6 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->upperTable,SIGNAL(cellClicked(int,int)),this,SLOT(updateDownTable()));
     connect(this,SIGNAL(delayContract(int)),this,SLOT(setDelayColor(int)));
     connect(this,SIGNAL(sendContract(int)),this,SLOT(setSendColor(int)));
+    connect(ui->actionQuit,SIGNAL(triggered()),this,SLOT(quitSlot()));
     connect(ui->actionAllContracts,SIGNAL(changed()),this,SLOT(updateTables()));
     connect(ui->actionTodayContracts,SIGNAL(changed()),this,SLOT(updateTables()));
     connect(ui->actionPaidContracts,SIGNAL(changed()),this,SLOT(updateTables()));
@@ -93,6 +95,12 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::quitSlot()
+{
+    //qDebug() << "quitSlot();";
+    this->close();
 }
 
 void MainWindow::addSlot()
@@ -533,9 +541,108 @@ void MainWindow::menuControl()
     updateTables();
 }
 
+QDomElement MainWindow::findNecessaryNode(const QDomNode& node,
+                                         const QString& necessaryName,
+                                         const QString& number,
+                                         const QString& code)
+{
+    qDebug() << 1;
+    if(node.isElement())
+    {
+        QDomElement element = node.toElement();
+
+        qDebug() << "element.attribute(\"number\") = " << element.attribute("number");
+        qDebug() << "number = " << number;
+
+        if(element.tagName() == necessaryName
+                && element.attribute("number") == number
+                && element.attribute("code") == code)
+        {
+            qDebug() << "RETURNED ELEMENT HAS ATTRIBUTE = " << element.attribute("number");
+            qDebug() << "address element = " << &element;
+            return element;
+        }
+    }
+
+    qDebug() << 2;
+
+    QDomNode siblingNode = node.nextSiblingElement();
+    while(!siblingNode.isNull()){
+        QDomElement res = findNecessaryNode( siblingNode, necessaryName, number, code);
+        if(!res.isNull())
+            //return siblingNode.toElement();
+            return res;
+        siblingNode = siblingNode.nextSiblingElement();
+    }
+
+    qDebug() << 3;
+
+    QDomNode childNode = node.firstChild();
+    if(!childNode.isNull()){
+        QDomElement res = findNecessaryNode( childNode, necessaryName, number, code);
+        if(!res.isNull()) return res;
+    }
+
+    //return ;
+}
+
 void MainWindow::clearSendContracts()
 {
-    //qDebug() << "Clear Activated";
+    QFile file("contracts.xml");
+    QMessageBox msgBox;
+    msgBox.setText("Из системы будут удалены протоколы\nотправленные заказчикам.");
+    msgBox.setInformativeText("Вы уверены?");
+    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Cancel);
+    msgBox.setIcon(QMessageBox::Warning);
+    int ret = msgBox.exec();
+
+    switch (ret) {
+      case QMessageBox::Ok:
+
+        for(int i = 0 ; i < ui->upperTable->rowCount() ; i++)
+        {
+
+            if(!QString::compare("ДА",ui->upperTable->item(i,11)->text()))
+            {
+                if(file.open(QIODevice::ReadWrite)) {
+                    QDomDocument doc("contracts");
+                    doc.setContent(&file);
+                    file.close();
+                    QDomElement  domElement = doc.documentElement();
+
+                    QDomElement element;
+                    element = findNecessaryNode(domElement,
+                                                "contract",
+                                                //ui->lineEdit_ContractNumber->text(),
+                                                //ui->lineEdit_Code->text());
+                                                ui->upperTable->item(i,0)->text(),
+                                                ui->upperTable->item(i,1)->text());
+
+                    qDebug() << "find element for delete has attribute = " << element.attribute("number");
+                    qDebug() << "address element = " << &element;
+
+                    domElement.removeChild(element);
+
+                    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) file.close();
+
+                    if(file.open(QIODevice::WriteOnly)) {
+                        QTextStream(&file) << doc.toString();
+                        file.close();
+                    }
+                }
+            }
+        }
+        updateTables();
+          break;
+      case QMessageBox::Cancel:
+          // Cancel was clicked
+          break;
+      default:
+          // should never be reached
+          break;
+    }
+
 
 }
 

@@ -13,43 +13,17 @@
   <SentToCustomer>НЕТ</SentToCustomer>
   <Comment>2</Comment>
  </contract>
- <contract number="1" code="1">
-  <Company>1</Company>
+ <contract number="2" code="3">
+  <Company>2</Company>
   <Sample>1</Sample>
   <DateOfReceipt>22.06.2015</DateOfReceipt>
   <DateTransferLaboratory>22.06.2015</DateTransferLaboratory>
   <DateReceiptResults>22.06.2015</DateReceiptResults>
-  <AccountNumber>1</AccountNumber>
-  <Pay>ДА</Pay>
-  <DatePay>18.06.2015</DatePay>
-  <Urgent>ДА</Urgent>
-  <SentToCustomer>НЕТ</SentToCustomer>
-  <Comment/>
- </contract>
- <contract number="1" code="1">
-  <Company>1</Company>
-  <Sample>1</Sample>
-  <DateOfReceipt>22.06.2015</DateOfReceipt>
-  <DateTransferLaboratory>22.06.2015</DateTransferLaboratory>
-  <DateReceiptResults>22.06.2015</DateReceiptResults>
-  <AccountNumber>1</AccountNumber>
-  <Pay>ДА</Pay>
-  <DatePay>19.06.2015</DatePay>
-  <Urgent>ДА</Urgent>
-  <SentToCustomer>ДА</SentToCustomer>
-  <Comment/>
- </contract>
- <contract number="3" code="3">
-  <Company>3</Company>
-  <Sample>3</Sample>
-  <DateOfReceipt>19.06.2015</DateOfReceipt>
-  <DateTransferLaboratory>19.06.2015</DateTransferLaboratory>
-  <DateReceiptResults>19.06.2015</DateReceiptResults>
-  <AccountNumber>3</AccountNumber>
-  <Pay>ДА</Pay>
-  <DatePay>19.06.2015</DatePay>
+  <AccountNumber>5</AccountNumber>
+  <Pay>НЕТ</Pay>
+  <DatePay>22.06.2015</DatePay>
   <Urgent>НЕТ</Urgent>
   <SentToCustomer>ДА</SentToCustomer>
-  <Comment>3</Comment>
+  <Comment/>
  </contract>
 </contracts>
