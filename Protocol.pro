@@ -24,3 +24,6 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     addDialog.ui \
     aboutdialog.ui
+
+OTHER_FILES += \
+    lapa.jpg
