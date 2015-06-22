@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QItemDelegate>
 #include <QDate>
+#include <QStyle>
 #include "addDialog.h"
 
 namespace Ui {
@@ -34,6 +35,8 @@ public slots:
     void setSendColor(int row);
     void setDelayColorTable();
     void menuControl();
+    void clearSendContracts();      // Слот для обработки сигнала очистки всех отправленных протоколов
+    bool getRowStatus(QString currentPayDate, QString urgent);  // Получить статус текущего элемента по оплате
 
 signals:
     void delayContract(int);

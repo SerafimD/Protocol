@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->ui->centralWidget->setLayout(ui->verticalLayout);
 
+    this->ui->mainToolBar->addAction(style()->standardIcon(QStyle::SP_TrashIcon),"",this,SLOT(clearSendContracts()));
+
     QAction *addAction = new QAction(tr("&Добавить"), this);
     //addAction->setShortcuts(QKeySequence::Open);
     addAction->setStatusTip(tr("Новый договор"));
@@ -295,8 +297,15 @@ void MainWindow::updateTables()
              QString payDate = dateNode.at(0).toElement().text();
              qDebug() << "payDate = " << payDate;
 
-             // Проверять соблюдение условия здесь
-             if(!QString::compare("НЕТ",pay))
+             QDomNodeList urgentNode = child.elementsByTagName("Urgent");
+             QString urgentStatus = urgentNode.at(0).toElement().text();
+             qDebug() << "urgentStatus = " << urgentStatus;
+
+             QDomNodeList sendNode = child.elementsByTagName("SentToCustomer");
+             QString sendStatus = sendNode.at(0).toElement().text();
+
+             // Проверять соблюдение условия здесь олачен и выдать сегодня/просрочен
+             if(!QString::compare("ДА",pay) && getRowStatus(payDate, urgentStatus) && !QString::compare("НЕТ",sendStatus))
              {
                  QDomNodeList hosts = child.childNodes();
                  ui->upperTable->setRowCount(tableRowCount);
@@ -315,7 +324,47 @@ void MainWindow::updateTables()
         }
      }
 
-    //setDelayColorTable();
+     if(!actionToday && !actionPaid && !actionNotPaid)
+     {
+         for (int i = 0; i < childs.length(); i ++)
+         {
+             QDomElement child = childs.at(i).toElement();
+
+             QDomAttr a = child.attributeNode("number");
+             QString NumberContract = a.value();
+
+             QDomAttr b = child.attributeNode("code");
+             QString Code = b.value();
+
+             QDomNodeList payNode = child.elementsByTagName("Pay");
+             QString pay = payNode.at(0).toElement().text();
+             qDebug() << "pay = " << pay;
+
+             QDomNodeList dateNode = child.elementsByTagName("DatePay");
+             QString payDate = dateNode.at(0).toElement().text();
+             qDebug() << "payDate = " << payDate;
+
+             QDomNodeList urgentNode = child.elementsByTagName("Urgent");
+             QString urgentStatus = urgentNode.at(0).toElement().text();
+             qDebug() << "urgentStatus = " << urgentStatus;
+
+
+                 QDomNodeList hosts = child.childNodes();
+                 ui->upperTable->setRowCount(tableRowCount);
+
+                 for(int j = 0 ; j < hosts.length(); j++)
+                 {
+                     QDomElement host = hosts.at(j).toElement();
+                     ui->upperTable->setItem(tableRowCount-1,j+2,new QTableWidgetItem(host.text()));
+                     ui->upperTable->setItem(tableRowCount-1,0,new QTableWidgetItem(NumberContract));
+                     ui->upperTable->setItem(tableRowCount-1,1,new QTableWidgetItem(Code));
+
+                 }
+                 tableRowCount++;
+        }
+     }
+
+    setDelayColorTable();
 
     this->ui->upperTable->resizeColumnsToContents();
     this->ui->upperTable->resizeRowsToContents();
@@ -482,4 +531,48 @@ void MainWindow::menuControl()
     ui->actionPaidContracts->setChecked(false);
     ui->actionNotPaidContracts->setChecked(false);
     updateTables();
+}
+
+void MainWindow::clearSendContracts()
+{
+    //qDebug() << "Clear Activated";
+
+}
+
+bool MainWindow::getRowStatus(QString currentPayDate, QString urgent)
+{
+        // если протокол не срочный
+        if(urgent == "НЕТ")
+        {
+            // получаем текущую дату оплаты
+            QDate datePaid = QDate::fromString(currentPayDate,"dd.MM.yyyy");
+
+            // получаем дату выдачи
+            QDate dateOfIssue = datePaid.addDays(14);
+
+            // Получаем разность между датой выдачи и текущей датой (системное время)
+            QString today = QDate::currentDate().toString("dd.MM.yyyy");
+            int daysToEnd = QDate::fromString(today,"dd.MM.yyyy").daysTo(dateOfIssue);
+
+            if(daysToEnd <= 0) return true;
+        }
+        // если срочный
+        else
+        {
+            // получаем текущую дату оплаты
+            QDate datePaid = QDate::fromString(currentPayDate,"dd.MM.yyyy");
+
+            QDate dateOfIssue;
+
+            // получаем дату выдачи
+            if(datePaid.dayOfWeek() != 5) dateOfIssue = datePaid.addDays(1);
+            else dateOfIssue = datePaid.addDays(3);
+
+            // Получаем разность между датой выдачи и текущей датой (системное время)
+            QString today = QDate::currentDate().toString("dd.MM.yyyy");
+            int daysToEnd = QDate::fromString(today,"dd.MM.yyyy").daysTo(dateOfIssue);
+
+            if(daysToEnd <= 0) return true;
+        }
+        return false;
 }
