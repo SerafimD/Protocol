@@ -39,4 +39,17 @@
   <SentToCustomer>НЕТ</SentToCustomer>
   <Comment>2</Comment>
  </contract>
+ <contract number="1" code="1">
+  <Company>1</Company>
+  <Sample>1</Sample>
+  <DateOfReceipt>22.06.2015</DateOfReceipt>
+  <DateTransferLaboratory>22.06.2015</DateTransferLaboratory>
+  <DateReceiptResults>22.06.2015</DateReceiptResults>
+  <AccountNumber>1</AccountNumber>
+  <Pay>ДА</Pay>
+  <DatePay>22.06.2015</DatePay>
+  <Urgent>ДА</Urgent>
+  <SentToCustomer>НЕТ</SentToCustomer>
+  <Comment/>
+ </contract>
 </contracts>

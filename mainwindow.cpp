@@ -144,9 +144,13 @@ void MainWindow::updateTables()
 {
      qDebug() << "Tables will be updated";
 
+     //ui->upperTable->clear();
+     ui->upperTable->setRowCount(0);
+     int tableRowCount = 1;
+
      QList<QAction*> actions = ui->menuDocs->actions();
 
-     bool actionAll = false;
+     //bool actionAll = false;
      bool actionToday = false;
      bool actionPaid = false;
      bool actionNotPaid = false;
@@ -155,10 +159,12 @@ void MainWindow::updateTables()
      {
         //qDebug() << actions.at(i)->iconText();
         //qDebug() << actions.at(i)->isChecked();
+        /*
         if(!QString::compare("Все договора",actions.at(i)->iconText()) && actions.at(i)->isChecked())
         {
             actionAll = true;
         }
+        */
         if(!QString::compare("К выдаче сегодня",actions.at(i)->iconText()) && actions.at(i)->isChecked())
         {
             actionToday = true;
@@ -212,19 +218,21 @@ void MainWindow::updateTables()
              QString payDate = dateNode.at(0).toElement().text();
              qDebug() << "payDate = " << payDate;
 
-             QDomNodeList hosts = child.childNodes();
-             for(int j = 0 ; j < hosts.length(); j++)
+             if(!QString::compare("ДА",pay))
              {
-                 QDomElement host = hosts.at(j).toElement();
+                 QDomNodeList hosts = child.childNodes();
+                 ui->upperTable->setRowCount(tableRowCount);
 
-                 if(!QString::compare("ДА",pay))
+                 for(int j = 0 ; j < hosts.length(); j++)
                  {
-                     ui->upperTable->setItem(i,j+2,new QTableWidgetItem(host.text()));
-                     ui->upperTable->setItem(i,0,new QTableWidgetItem(NumberContract));
-                     ui->upperTable->setItem(i,1,new QTableWidgetItem(Code));
+                     QDomElement host = hosts.at(j).toElement();
+                     ui->upperTable->setItem(tableRowCount-1,j+2,new QTableWidgetItem(host.text()));
+                     ui->upperTable->setItem(tableRowCount-1,0,new QTableWidgetItem(NumberContract));
+                     ui->upperTable->setItem(tableRowCount-1,1,new QTableWidgetItem(Code));
                  }
-                 else continue;
+                 tableRowCount++;
              }
+             else continue;
         }
      }
 
@@ -248,19 +256,62 @@ void MainWindow::updateTables()
              QString payDate = dateNode.at(0).toElement().text();
              qDebug() << "payDate = " << payDate;
 
-             QDomNodeList hosts = child.childNodes();
-             for(int j = 0 ; j < hosts.length(); j++)
+             if(!QString::compare("НЕТ",pay))
              {
-                 QDomElement host = hosts.at(j).toElement();
+                 QDomNodeList hosts = child.childNodes();
+                 ui->upperTable->setRowCount(tableRowCount);
 
-                 if(!QString::compare("НЕТ",pay))
+                 for(int j = 0 ; j < hosts.length(); j++)
                  {
-                     ui->upperTable->setItem(i,j+2,new QTableWidgetItem(host.text()));
-                     ui->upperTable->setItem(i,0,new QTableWidgetItem(NumberContract));
-                     ui->upperTable->setItem(i,1,new QTableWidgetItem(Code));
+                     QDomElement host = hosts.at(j).toElement();
+                     ui->upperTable->setItem(tableRowCount-1,j+2,new QTableWidgetItem(host.text()));
+                     ui->upperTable->setItem(tableRowCount-1,0,new QTableWidgetItem(NumberContract));
+                     ui->upperTable->setItem(tableRowCount-1,1,new QTableWidgetItem(Code));
+
                  }
-                 else continue;
+                 tableRowCount++;
              }
+             else continue;
+        }
+     }
+
+     if(actionToday)
+     {
+         for (int i = 0; i < childs.length(); i ++)
+         {
+             QDomElement child = childs.at(i).toElement();
+
+             QDomAttr a = child.attributeNode("number");
+             QString NumberContract = a.value();
+
+             QDomAttr b = child.attributeNode("code");
+             QString Code = b.value();
+
+             QDomNodeList payNode = child.elementsByTagName("Pay");
+             QString pay = payNode.at(0).toElement().text();
+             qDebug() << "pay = " << pay;
+
+             QDomNodeList dateNode = child.elementsByTagName("DatePay");
+             QString payDate = dateNode.at(0).toElement().text();
+             qDebug() << "payDate = " << payDate;
+
+             // Проверять соблюдение условия здесь
+             if(!QString::compare("НЕТ",pay))
+             {
+                 QDomNodeList hosts = child.childNodes();
+                 ui->upperTable->setRowCount(tableRowCount);
+
+                 for(int j = 0 ; j < hosts.length(); j++)
+                 {
+                     QDomElement host = hosts.at(j).toElement();
+                     ui->upperTable->setItem(tableRowCount-1,j+2,new QTableWidgetItem(host.text()));
+                     ui->upperTable->setItem(tableRowCount-1,0,new QTableWidgetItem(NumberContract));
+                     ui->upperTable->setItem(tableRowCount-1,1,new QTableWidgetItem(Code));
+
+                 }
+                 tableRowCount++;
+             }
+             else continue;
         }
      }
 
