@@ -1,27 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE contracts>
 <contracts>
- <contract number="2б" code="ьь">
-  <Company>3</Company>
-  <Sample>5</Sample>
-  <DateOfReceipt>22.06.2015</DateOfReceipt>
-  <DateTransferLaboratory>22.06.2015</DateTransferLaboratory>
-  <DateReceiptResults>22.06.2015</DateReceiptResults>
+ <contract number="1" code="1">
+  <Company>1</Company>
+  <Sample>1</Sample>
+  <DateOfReceipt>24.06.2015</DateOfReceipt>
+  <DateTransferLaboratory>24.06.2015</DateTransferLaboratory>
+  <DateReceiptResults>24.06.2015</DateReceiptResults>
   <AccountNumber/>
-  <Pay>НЕТ</Pay>
-  <DatePay>22.06.2015</DatePay>
-  <Urgent>НЕТ</Urgent>
-  <SentToCustomer>НЕТ</SentToCustomer>
-  <Comment/>
- </contract>
- <contract number="2" code="3а">
-  <Company>3</Company>
-  <Sample>3</Sample>
-  <DateOfReceipt>22.06.2015</DateOfReceipt>
-  <DateTransferLaboratory>22.06.2015</DateTransferLaboratory>
-  <DateReceiptResults>22.06.2015</DateReceiptResults>
-  <AccountNumber>3</AccountNumber>
   <Pay>ДА</Pay>
-  <DatePay>03.06.2015</DatePay>
+  <DatePay>11.06.2015</DatePay>
   <Urgent>НЕТ</Urgent>
   <SentToCustomer>НЕТ</SentToCustomer>
   <Comment/>
