@@ -202,12 +202,8 @@ void addDialog::on_buttonBox_accepted()
             qDebug() << "Not create";
             // файл бд не создан, создаём его
             QDomDocument doc("contracts");
-            QDomProcessingInstruction instr = doc.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"utf-8\"");
-
-            //<?xml version="1.0" encoding="windows-1251"?>
-
-            doc.appendChild(instr);
-
+            QDomNode xmlNode = doc.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"windows-1251\"");
+            doc.insertBefore(xmlNode, doc.firstChild());
             QDomElement  domElement = doc.createElement("contracts");
             doc.appendChild(domElement);
 
